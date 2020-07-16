@@ -146,7 +146,7 @@ class Team(object):
                 m = this.member[i]
                 ret2 += '%s '%(m.dmg_sum())
         if -2 in tmp:
-            ret2 += this.member[-1].dmg_sum()
+            ret2 += this.member[-2].dmg_sum()
         else:
             ret2 = ret2[:-1]
         return ret, ret2
