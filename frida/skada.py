@@ -253,7 +253,7 @@ def on_message(message, data):
 
         #dp = line[5]+line[6]+line[7]+line[8]
         if teamdst not in teams:
-            teams[teamdst] = Team(tn-1)
+            teams[teamdst] = Team(tn)
 
         t = teams[teamdst]
         t.add(tn, idx, dmg, cname)
