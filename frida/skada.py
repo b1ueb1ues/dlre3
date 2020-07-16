@@ -179,14 +179,14 @@ def summ():
         ssum += '\n[+] summary:\n'
         for i in teams:
             dstid, tmp = i.split(':')
-            teamid, dstid = dstid.split('->')
             dsttype = tmp[1]
             if dsttype != '1':
                 continue
+            teamid, dstid = dstid.split('->')
             t = teams[i]
-            duration = t.dt
+            t_end = t.dt
             t_start = t.t1
-            t_end = t_start + duration
+            duration = t_end - t_start
             name_dps, dmg_sum = t.name_dps()
             ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs]  dmg:[%s]\n'%(dstid, teamid, t_start, t_end, dmg_sum)
             ssum += '\tdps: [ %s ] %.2fs\n'%(name_dps, duration)
