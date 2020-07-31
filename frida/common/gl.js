@@ -68,15 +68,16 @@ gl.dummy = function () {
     });
 }
 
-gl.sp = function (sp) {
+gl.sp = function (sp, show) {
     if (!sp)
-        sp = 20000;
+        sp = 100000;
 
     hook(
     offset.characterbase.recoverysp
     ,{
         onEnter: function(args){
-            console.log('** sp: '+args[1].toInt32());
+            if (show)
+                console.log('** sp: '+args[1].toInt32());
             this.context.x1 = sp;
         },
         onLeave: function(retval){
