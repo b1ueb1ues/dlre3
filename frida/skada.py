@@ -328,11 +328,12 @@ if __name__ == '__main__':
             fout = None
             reset()
     except KeyboardInterrupt as e:
-        s = summ()
-        sys.stderr.write(s)
-        fwrite(fout, '"%s"'%s)
-        fout.close()
-        sys.stderr.write('[+] fclose\n')
+        if fout:
+            s = summ()
+            sys.stderr.write(s)
+            fwrite(fout, '"%s"'%s)
+            fout.close()
+            sys.stderr.write('[+] fclose\n')
         #sys.stderr.write(e)
         exit()
 
