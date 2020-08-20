@@ -99,6 +99,7 @@ offset.characterbase.calcabnormalstatusdamage = #CharacterBase$$CalcAbnormalStat
 
 offset.characterbase.setabnormalstatus = #CharacterBase$$SetAbnormalStatus#;
 offset.characterbase.getmaxsp = #CharacterBase$$GetMaxSp#;
+offset.characterbase.showdamageui = #CharacterBase$$ShowDamageUI#;
 
 offset.enemycharacter.ondamaged = #EnemyCharacter$$OnDamaged#;
 
@@ -118,7 +119,7 @@ offset.enemyctrl.setaiaction = #EnemyCtrl$$SetAIAction#;
 offset.collisionhitattribute.get_damageadjustment = #CollisionHitAttribute$$get_DamageAdjustment#;
 offset.collisionhitattribute.get_tobk = #CollisionHitAttribute$$get_ToBreakDmgRate#;
 
-offset.chainctrl.add = #ChainCtrl$$Add#;
+offset.chainctrl.add = #ChainCtrl$$Add,1#;
 
 offset.characterbufftriggerreactionbomb.execdebuffextradamage = #CharacterBuffTriggerReactionBomb$$ExecDebuffExtraDamage#;
 
