@@ -5,3 +5,6 @@
 https://github.com/Perfare/Il2CppDumper
 
 use 1,4 for dl
+
+## ghidra script
+cone2meta -> _use dumper_ -> ida2ghidra -> ghidra2symbol
