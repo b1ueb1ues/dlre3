@@ -90,7 +90,7 @@ function bt(t){
     var b = Thread.backtrace(t.context);
     console.log('bt');
     for (var i in b) {
-        console.log(ptr(b[i]).add(0-ilbase));
+        console.log(ptr(b[i]).add(0-lib_base));
     }
 }
 
