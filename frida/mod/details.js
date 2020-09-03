@@ -27,6 +27,8 @@ hook(
 offset.characterbase.showdamageui
 ,{ 
     onEnter: function(args){
+        var src = args[0];
+        var dst = args[1];
         var dmg = args[2];
         var crit = args[3];
         var atype = args[6];
