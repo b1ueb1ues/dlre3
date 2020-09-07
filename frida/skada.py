@@ -229,14 +229,15 @@ def on_message(message, data):
         line = p.split(',')
         tn = float(line[0])
         srcid = line[2].split('(')[0].strip()
-        if srcid in charaname:
+
+        if srcid == '-1':
+            cname = 'dot'
+        elif srcid == '-2':
+            cname = 'buff'
+        elif srcid in charaname:
             cname = charaname[srcid]
         else:
             cname = '_unknown_'
-        if srcid == '-1':
-            cname = 'dot'
-        if srcid == '-2':
-            cname = 'buff'
 
         dmg = int(line[-3])
         teamno = line[4]+line[5]

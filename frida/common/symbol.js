@@ -129,6 +129,7 @@ offset.ingameuictrl.setmovein = 0x17F1A78;
 offset.ctrloverdrive.ondamaged = 0x18E51FC;
 
 offset.characterbuff.applycommon = 0x21F1BEC;
+offset.characterbuff.apply = 0x21DF28C;
 
 
 /**

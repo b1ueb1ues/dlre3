@@ -129,6 +129,7 @@ offset.ingameuictrl.setmovein = #InGameUICtrl$$SetMoveIn#;
 offset.ctrloverdrive.ondamaged = #CtrlOverdrive$$OnDamaged#;
 
 offset.characterbuff.applycommon = #CharacterBuff$$ApplyCommon#;
+offset.characterbuff.apply = #CharacterBuff$$Apply,1#;
 
 
 /**

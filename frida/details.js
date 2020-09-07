@@ -1,8 +1,10 @@
 // god like
-gl.dummy();
-gl.sp();
+//gl.dummy();
+//gl.sp();
 //gl.attack(10000);
 //gl.invincible();
+
+// save the day
 savetheday();
 
 // time init
@@ -108,6 +110,8 @@ function commit(log) {
         ci = -1;
         idx = 0;
     }
+    if (log.type == 'buff')
+        ci = -2;
 
     var from = csv(ci, '[', ct, dpi, dpp, aid, idx,']') ;
 
@@ -231,7 +235,7 @@ offset.characterbase.showdamageui
 
 if (1)
 hook(
-0x21DF28C
+offset.characterbuff.apply
 ,{
     onEnter: function (args) {
         var conid = args[3].toInt32();
@@ -244,7 +248,6 @@ hook(
         tmp.dst = args[1];
         var cha = args[2];
         tmp.src = args[4];
-        console.log(tmp.src);
         tmp.label = 'cb::apply';
         tmp.type = 'buff';
         tmp.aid = cha.add( o_cha.actionid  ).readInt();

@@ -1,7 +1,9 @@
 // god like
-gl.dummy();
+//gl.dummy();
 //gl.attack(10000);
 //gl.invincible();
+
+// save the day
 savetheday();
 
 
