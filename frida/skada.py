@@ -2,6 +2,8 @@
 # -*- encoding: utf8
 # config ####################
 DPSRANGE = 5
+#ENGINE = 'skada.js'
+ENGINE = 'details.js'
 
 #############################
 import lib
@@ -14,6 +16,7 @@ from common.tl import skillname, charaname, enemyskill
 t0 = 0
 fout = None
 fpname = ''
+foutname = None
 
 class Nilds(object):
     def dps_total(this):
@@ -153,7 +156,7 @@ class Team(object):
 
 
 def reset():
-    global fout, fpname
+    global fout, fpname, foutname
     if fpname:
         fbasename, ext = os.path.splitext(fpname)
         if not ext or ext=='':
@@ -164,6 +167,7 @@ def reset():
             fname = fbasename + '.%s'%count
             count += 1
         fout = open(fname+ext, 'wb')
+        foutname = fname+ext
     else:
         fout = None
 
@@ -176,7 +180,7 @@ def summ():
     global teams
     ssum = ''
     if teams != {}:
-        ssum += '\n[+] summary:\n'
+        #ssum += '\n[+] summary:\n'
         for i in teams:
             dstid, tmp = i.split(':')
             dsttype = tmp[1]
@@ -184,7 +188,7 @@ def summ():
                 continue
             teamid, dstid = dstid.split('->')
             t = teams[i]
-            t_end = t.dt
+            t_end = t.dt + t.t1
             t_start = t.t1
             duration = t_end - t_start
             name_dps, dmg_sum = t.name_dps()
@@ -207,10 +211,10 @@ def on_message(message, data):
             t0 = float(message['payload'])
             return
         if data == '0' or data == b'0':
-            s = summ()
+            s = '\n[+] summary:\n' + summ()
             sys.stderr.write(s)
             if fout:
-                fwrite(fout, s)
+                fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s)
             reset()
             if fout:
                 fwrite(fout, message['payload']+'\n')
@@ -231,8 +235,10 @@ def on_message(message, data):
             cname = '_unknown_'
         if srcid == '-1':
             cname = 'dot'
+        if srcid == '-2':
+            cname = 'buff'
 
-        dmg = int(line[-1])
+        dmg = int(line[-3])
         teamno = line[4]+line[5]
         dst = line[10]
         dstid, dstinid = dst[2:].split(':')
@@ -258,9 +264,7 @@ def on_message(message, data):
         t = teams[teamdst]
         t.add(tn, idx, dmg, cname)
 
-        tmp = ', '
-
-        tmp += ','
+        tmp = ','
         tmp += cname+'->'
         if dstid in charaname:
             tmp += ' '+charaname[dstid]
@@ -315,25 +319,37 @@ if __name__ == '__main__':
         fpname = None
 
     reset()
-    lib.run('skada.js', conf, on_message)
+    lib.run(ENGINE, conf, on_message)
     try:
         while 1:
             input()
             if fout:
                 s = summ()
+                s1 = '\n[+] summary:\n' + s
+                s2 = '\n[+] summary: '+ foutname +'\n' + s
                 sys.stderr.write(s)
-                fwrite(fout, '"%s"'%s)
+                fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
                 fout.close()
                 sys.stderr.write('[+] fclose\n')
+
+                fsum = open('.skada.log', 'ab')
+                fwrite(fsum, s2)
+                fsum.close()
             fout = None
             reset()
     except KeyboardInterrupt as e:
         if fout:
             s = summ()
-            sys.stderr.write(s)
-            fwrite(fout, '"%s"'%s)
+            s1 = '\n[+] summary:\n' + s
+            s2 = '\n[+] summary: '+ foutname +'\n' + s
+            sys.stderr.write(s1)
+            fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
             fout.close()
             sys.stderr.write('[+] fclose\n')
+
+            fsum = open('.skada.log', 'ab')
+            fwrite(fsum, s2)
+            fsum.close()
         #sys.stderr.write(e)
         exit()
 

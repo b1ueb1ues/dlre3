@@ -1,5 +1,5 @@
 // god like
-//gl.dummy();
+gl.dummy();
 //gl.attack(10000);
 //gl.invincible();
 savetheday();
@@ -27,41 +27,41 @@ if(now_init()==0)
 else
     send(now(),tone);
 
+
+function csv() {
+    var r = '';
+    for (var i in arguments) {
+        if (i==0)
+            r += arguments[i];
+        else
+            r = r + ',' + arguments[i];
+    }
+    return r
+}
+
+
 function at2name(at){
     var ab = ''
-    if(at==0){
-        ab = 'none'
-    } else if(at==1){
-        ab = 'poison'
-    } else if(at==2){
-        ab = 'burn'
-    } else if(at==3){
-        ab = 'freeze'
-    } else if(at==4){
-        ab = 'paralysis'
-    } else if(at==5){
-        ab = 'darkness'
-    } else if(at==6){
-        ab = 'swoon'
-    } else if(at==7){
-        ab = 'curse'
-    } else if(at==8){
-        ab = 'rebirth'
-    } else if(at==9){
-        ab = 'slowmove'
-    } else if(at==10){
-        ab = 'sleep'
-    } else if(at==11){
-        ab = 'frost'
-    } else if(at==99){
-        ab = 'all'
+    switch(at){
+        case 0: ab = 'null'; break;
+        case 1: ab = 'poison'; break;
+        case 2: ab = 'burn'; break;
+        case 3: ab = 'freeze'; break;
+        case 4: ab = 'paralysis'; break;
+        case 5: ab = 'darkness'; break;
+        case 6: ab = 'stun'; break;
+        case 7: ab = 'curse'; break;
+        case 8: ab = 'rebirth'; break;
+        case 9: ab = 'bog'; break;
+        case 10: ab = 'sleep'; break;
+        case 11: ab = 'frostbite'; break;
+        case 99: ab = 'all'; break;
+        default: ab = 'null'; break;
     }
     return ab
 }
 
-
-//send('self/team,[,ctype,::,cid,didx,dposition,multiplay_id,multiplay_index,],<actionid>,<skillid>,iscrit,dmg');
-function recount(type, dot, dmg, iscrit, src, dst, actionid, skillid){
+function recount(label, dot, dmg, iscrit, src, dst, aid, sid){
     var o_cb = offset.characterbase;
     var o_cha = offset.collisionhitattribute;
     var o_ci = offset.characterid;
@@ -69,7 +69,7 @@ function recount(type, dot, dmg, iscrit, src, dst, actionid, skillid){
     var buff = 0;
 
     if(dot){
-        skillid = at2name(actionid);
+        sid = at2name(aid);
     }
 
     var cb = src;
@@ -100,7 +100,7 @@ function recount(type, dot, dmg, iscrit, src, dst, actionid, skillid){
         aid = -2;
         ci = -1;
     }
-    var from = ci+' ,[,'+ ct+','+dpi+','+dpp+','+aid+','+idx   +',]' ;
+    var from = csv(ci, '[', ct, dpi, dpp, aid, idx,']') ;
 
     cb = dst;
     ct =     cb.add(  o_cb.charactertype           ).readInt(); 
@@ -118,18 +118,17 @@ function recount(type, dot, dmg, iscrit, src, dst, actionid, skillid){
     }
     var to = ci+':['+ ct+'|'+dpi+'.'+dpp+'.'+aid+'.'+idx +']' ;
 
-    var skada = now()+','
-    skada += type+','+ from +',';
-    skada += '->'+to+','
-    skada += '<'+actionid+'>,<'+skillid+'>,'
+    var dtype;
     if(iscrit){
-        skada += 'crit_dmg'
+        dtype = 'crit_dmg'
     }else if(dot){
-        skada += 'dot_dmg'
+        dtype = 'dot_dmg'
     }else{
-        skada += 'dmg'
+        dtype = 'dmg'
     }
-    skada +=': ,' + dmg;
+
+    var skada = csv(now(), label, from, '->'+to, 
+        '<'+aid+'>', '<'+sid+'>', dtype, dmg, '//', ' ');
     send(skada);
 }
 
@@ -140,8 +139,8 @@ offset.maingamectrl.playqueststart,
     onEnter: function(args){
         now_init();
         send(0, tone);
-        var s = 'timestamp,self/other,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
-        s += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-'
+        var s = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
+        s += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-'
         send(s, tzero);
         send('quest_start\n==============================', tstderr);
     },
