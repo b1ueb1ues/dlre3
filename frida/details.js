@@ -72,6 +72,7 @@ function log_clean(log) {
     log.sid    = null;
     log.ts     = -1;
 }
+log_clean(log);
 
 function commit(log) {
     var o_cb = offset.characterbase;
@@ -88,11 +89,11 @@ function commit(log) {
         dpp =    cb.add(  o_cb.dungeonpartyposition    ).readInt(); 
         var p_mpid = cb.add(  o_cb.multiplayid             ).readPointer(); 
 
-        if (ct==0 && ci%10==2) { // dragon
-            var di = ci;
+        var isd = ''+ci;
+        if (ct==0 && isd[0] == '2'){  //dragon
             cb = cb.add( o_dragon.human).readPointer();
             ci = cb.add( o_cb.characterid).readInt();
-            ci = ''+ci+'('+di+')'
+            ci = ''+ci+'('+isd+')'
         }
         if (p_mpid != 0){
             aid = p_mpid.add( o_ci.actorid  ).readU8(); 
@@ -147,7 +148,13 @@ function commit(log) {
         dtype = 'unknown:'
     }
 
-    var skada = csv(log.ts, log.label, from, '->'+to, 
+    var ts;
+    if (log.ts == -1)
+        ts = now();
+    else
+        ts = log.ts
+
+    var skada = csv(ts, log.label, from, '->'+to, 
         '<'+log.aid+'>', '<'+log.sid+'>', dtype, log.dmg, '//', log.comment);
     send(skada);
     log_clean(log);

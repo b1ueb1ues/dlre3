@@ -156,7 +156,7 @@ class Team(object):
 
 
 def reset():
-    global fout, fpname, foutname
+    global fout, fpname, foutname, teams
     if fpname:
         fbasename, ext = os.path.splitext(fpname)
         if not ext or ext=='':
@@ -170,6 +170,7 @@ def reset():
         foutname = fname+ext
     else:
         fout = None
+    teams = {}
 
 
 def fwrite(f, string):
@@ -177,27 +178,37 @@ def fwrite(f, string):
 
 teams = {}
 def summ():
-    global teams
+    global teams, foutname
+    if teams == {}:
+        return 0
     ssum = ''
-    if teams != {}:
-        #ssum += '\n[+] summary:\n'
-        for i in teams:
-            dstid, tmp = i.split(':')
-            dsttype = tmp[1]
-            if dsttype != '1':
-                continue
-            teamid, dstid = dstid.split('->')
-            t = teams[i]
-            t_end = t.dt + t.t1
-            t_start = t.t1
-            duration = t_end - t_start
-            name_dps, dmg_sum = t.name_dps()
-            ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs]  dmg:[%s]\n'%(dstid, teamid, t_start, t_end, dmg_sum)
-            ssum += '\tdps: [ %s ] %.2fs\n'%(name_dps, duration)
-            #ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs] %.2fs\n'%(dstid, teamid, t_start, t_end, duration)
-            #ssum += '\tdmg: [ %s ]\n'%(dmg_sum)
-            #ssum += '\tdps: [ %s ]\n'%(name_dps)
-            ssum += '\n'
+    for i in teams:
+        dstid, tmp = i.split(':')
+        dsttype = tmp[1]
+        if dsttype != '1':
+            continue
+        teamid, dstid = dstid.split('->')
+        t = teams[i]
+        t_end = t.dt + t.t1
+        t_start = t.t1
+        duration = t_end - t_start
+        name_dps, dmg_sum = t.name_dps()
+        ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs]  dmg:[%s]\n'%(dstid, teamid, t_start, t_end, dmg_sum)
+        ssum += '\tdps: [ %s ] %.2fs\n'%(name_dps, duration)
+        #ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs] %.2fs\n'%(dstid, teamid, t_start, t_end, duration)
+        #ssum += '\tdmg: [ %s ]\n'%(dmg_sum)
+        #ssum += '\tdps: [ %s ]\n'%(name_dps)
+        ssum += '\n'
+
+    s1 = '\n[+] summary:\n' + ssum
+    sys.stderr.write(s1)
+    fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
+
+    s2 = '\n[+] summary: '+ foutname +'\n' + ssum
+    fsum = open('.skada.log', 'ab')
+    fwrite(fsum, s2)
+    fsum.close()
+
     teams = {}
     return ssum
 
@@ -211,10 +222,8 @@ def on_message(message, data):
             t0 = float(message['payload'])
             return
         if data == '0' or data == b'0':
-            s = '\n[+] summary:\n' + summ()
-            sys.stderr.write(s)
             if fout:
-                fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s)
+                summ()
             reset()
             if fout:
                 fwrite(fout, message['payload']+'\n')
@@ -325,32 +334,14 @@ if __name__ == '__main__':
         while 1:
             input()
             if fout:
-                s = summ()
-                s1 = '\n[+] summary:\n' + s
-                s2 = '\n[+] summary: '+ foutname +'\n' + s
-                sys.stderr.write(s)
-                fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
+                summ()
                 fout.close()
                 sys.stderr.write('[+] fclose\n')
-
-                fsum = open('.skada.log', 'ab')
-                fwrite(fsum, s2)
-                fsum.close()
             fout = None
             reset()
     except KeyboardInterrupt as e:
         if fout:
             s = summ()
-            s1 = '\n[+] summary:\n' + s
-            s2 = '\n[+] summary: '+ foutname +'\n' + s
-            sys.stderr.write(s1)
-            fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
-            fout.close()
-            sys.stderr.write('[+] fclose\n')
-
-            fsum = open('.skada.log', 'ab')
-            fwrite(fsum, s2)
-            fsum.close()
         #sys.stderr.write(e)
         exit()
 
