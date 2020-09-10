@@ -189,7 +189,7 @@ def summ():
             continue
         teamid, dstid = dstid.split('->')
         t = teams[i]
-        t_end = t.dt + t.t1
+        t_end = t.dt
         t_start = t.t1
         duration = t_end - t_start
         name_dps, dmg_sum = t.name_dps()
