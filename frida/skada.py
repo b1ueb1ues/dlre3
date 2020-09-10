@@ -82,7 +82,8 @@ class Team(object):
         this.member[idx].add(timenow, dmg, name)
         #for i in this.member.values():
         #    i.refresh(timenow)
-        this.dt = timenow - this.t0
+        this.dt = timenow - this.t1
+        this.tn = timenow - this.t0
 
     def dps_total(this):
         ret = ',dps_total:{'
@@ -189,7 +190,7 @@ def summ():
             continue
         teamid, dstid = dstid.split('->')
         t = teams[i]
-        t_end = t.dt
+        t_end = t.tn
         t_start = t.t1
         duration = t_end - t_start
         name_dps, dmg_sum = t.name_dps()
@@ -312,7 +313,7 @@ def on_message(message, data):
         if line[4] == '0' and dsttype=='1':
             #sys.stderr.write(timing[1:]+',dst:'+dstid+teaminteamno+src+total+_sum+'\n')
             name_dps, dmg = t.name_dps()
-            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.dt, teamno, dstid, name_dps))
+            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
         #}debug
     else:
         print(message)
