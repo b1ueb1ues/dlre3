@@ -47,6 +47,7 @@ offset.characterid.actorid = 0x10;
 offset.characterid.index = 0x12;
 
 offset.collisionhitattribute.actionhitexectype = 0xF0;
+offset.collisionhitattribute.id = 0xE8;
 
 offset.damagestatus.value = 0x14;
 offset.damagestatus.iscrit = 0x18;
@@ -130,6 +131,7 @@ offset.ctrloverdrive.ondamaged = 0x18EB278;
 
 offset.characterbuff.applycommon = 0x21FAEA8;
 offset.characterbuff.apply = 0x21E8548;
+offset.characterbuff.applybyability = 0x21FBA98;
 
 
 /**

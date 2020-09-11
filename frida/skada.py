@@ -11,7 +11,7 @@ import time
 import sys
 import re
 import conf
-from common.tl import skillname, charaname, enemyskill
+from common.tl import skillname, charaname, enemyskill, abilityname
 
 t0 = 0
 fout = None
@@ -217,7 +217,7 @@ def summ():
 def on_message(message, data):
     global teams
     global t0
-    global skillname, charaname, enemyskill
+    global skillname, charaname, enemyskill, abilityname
     global fout
     if message['type'] == 'send' :
         if data == '1' or data == b'1':
@@ -281,6 +281,8 @@ def on_message(message, data):
             tmp += ' '+charaname[dstid]
         if skillid in skillname:
             tmp += ' '+skillname[skillid]
+        if skillid in abilityname:
+            tmp += ' '+abilityname[skillid]
         if actionid in enemyskill:
             tmp += ' '+enemyskill[actionid]
 

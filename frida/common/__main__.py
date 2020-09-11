@@ -130,9 +130,10 @@ def var(line):
 skillname = {}
 charaname = {}
 enemyskill = {}
+abilityname = {}
 
 def get_symbol():
-    global skillname, charaname, enemyskill
+    global skillname, charaname, enemyskill, abilityname
     f = open(path_tlin,'rb')
     data = f.read().decode()
     tmp = re.findall(r'CHARA_NAME_(\d+)".\n.*_Text = "(.*)"', data)
@@ -161,17 +162,21 @@ def get_symbol():
     tmp = re.findall(r'SKILL_NAME_(\d+)".\n.*_Text = "(.*)"', data)
     for i in tmp:
         skillname[i[0]] = i[1]
+    tmp = re.findall(r'ABILITY_NAME_(\d+)".\n.*_Text = "(.*)"', data)
+    for i in tmp:
+        abilityname[i[0]] = i[1].replace('{ability_val0}', '?')
     tmp = re.findall(r'ENEMY_SKILL.*_(\d+)".\n.*_Text = "(.*)"', data)
     for i in tmp:
         enemyskill[i[0]] = i[1]
     f.close()
 
 def save_symbol() :
-    global skillname, charaname, enemyskill
+    global skillname, charaname, enemyskill, abilityname
     fout = open(path_tlout, 'w')
     fout.write('skillname = %s\n'%str(skillname))
     fout.write('charaname = %s\n'%str(charaname))
     fout.write('enemyskill = %s\n'%str(enemyskill))
+    fout.write('abilityname = %s\n'%str(abilityname))
     print('\n[+] save', path_tlout)
 
 

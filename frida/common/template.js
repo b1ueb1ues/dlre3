@@ -47,6 +47,7 @@ offset.characterid.actorid = @CharacterId,actorId@;
 offset.characterid.index = @CharacterId,index@;
 
 offset.collisionhitattribute.actionhitexectype = @CollisionHitAttribute,_HitExecType@;
+offset.collisionhitattribute.id = @CollisionHitAttribute,_Id@;
 
 offset.damagestatus.value = @DamageStatus,<value>@;
 offset.damagestatus.iscrit = @DamageStatus,<isCritical>@;
@@ -130,6 +131,7 @@ offset.ctrloverdrive.ondamaged = #CtrlOverdrive$$OnDamaged#;
 
 offset.characterbuff.applycommon = #CharacterBuff$$ApplyCommon#;
 offset.characterbuff.apply = #CharacterBuff$$Apply,1#;
+offset.characterbuff.applybyability = #CharacterBuff$$ApplyByAbility#;
 
 
 /**
