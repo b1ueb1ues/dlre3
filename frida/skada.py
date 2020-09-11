@@ -157,7 +157,7 @@ class Team(object):
         return ret, ret2
 
 
-def freset():
+def foutopen():
     global fout, fpname, foutname, teams
     if fpname:
         fbasename, ext = os.path.splitext(fpname)
@@ -226,7 +226,7 @@ def on_message(message, data):
         if data == '0' or data == b'0':
             if fout:
                 summ()
-            freset()
+            foutopen()
             if fout:
                 fwrite(fout, message['payload']+'\n')
             else:
@@ -331,7 +331,7 @@ if __name__ == '__main__':
     else:
         fpname = None
 
-    freset()
+    foutopen()
     lib.run(ENGINE, conf, on_message)
     try:
         while 1:
@@ -341,7 +341,7 @@ if __name__ == '__main__':
                 fout.close()
                 sys.stderr.write('[+] fclose\n')
             fout = None
-            freset()
+            foutopen()
     except KeyboardInterrupt as e:
         if fout:
             s = summ()
