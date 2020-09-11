@@ -74,6 +74,7 @@ class Team(object):
             this.t1 = t0
         this.member = {}
         this.midx = []
+        this.dt = 0;
 
     def add(this, timenow, idx, dmg, name=''):
         if idx not in this.member:
@@ -156,7 +157,7 @@ class Team(object):
         return ret, ret2
 
 
-def reset():
+def freset():
     global fout, fpname, foutname, teams
     if fpname:
         fbasename, ext = os.path.splitext(fpname)
@@ -225,7 +226,7 @@ def on_message(message, data):
         if data == '0' or data == b'0':
             if fout:
                 summ()
-            reset()
+            freset()
             if fout:
                 fwrite(fout, message['payload']+'\n')
             else:
@@ -242,8 +243,6 @@ def on_message(message, data):
 
         if srcid == '-1':
             cname = 'dot'
-        elif srcid == '-2':
-            cname = 'buff'
         elif srcid in charaname:
             cname = charaname[srcid]
         else:
@@ -273,7 +272,8 @@ def on_message(message, data):
             teams[teamdst] = Team(tn)
 
         t = teams[teamdst]
-        t.add(tn, idx, dmg, cname)
+        if srcid != '-2': #buff
+            t.add(tn, idx, dmg, cname)
 
         tmp = ','
         tmp += cname+'->'
@@ -329,7 +329,7 @@ if __name__ == '__main__':
     else:
         fpname = None
 
-    reset()
+    freset()
     lib.run(ENGINE, conf, on_message)
     try:
         while 1:
@@ -339,7 +339,7 @@ if __name__ == '__main__':
                 fout.close()
                 sys.stderr.write('[+] fclose\n')
             fout = None
-            reset()
+            freset()
     except KeyboardInterrupt as e:
         if fout:
             s = summ()

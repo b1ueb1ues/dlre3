@@ -111,8 +111,6 @@ function commit(log) {
         ci = -1;
         idx = 0;
     }
-    if (log.type == 'buff')
-        ci = -2;
 
     var from = csv(ci, '[', ct, dpi, dpp, aid, idx,']') ;
 
@@ -208,8 +206,6 @@ offset.characterbase.showdamageui
         var addition_attacker = sp.add(0x30).readPointer();
         var isa = sp.add(0x38).readU8();
 
-        var type, label, aid, sid;
-
         //type
         if (isa)
             log.type = 'admg';
@@ -225,7 +221,7 @@ offset.characterbase.showdamageui
             log.src = src;
 
         //id
-        if(type == 'dot') {
+        if(log.type == 'dot') {
             log.aid = atype;
             log.sid = at2name(atype);
         }
@@ -254,7 +250,8 @@ offset.characterbuff.apply
         var tmp = {};
         tmp.dst = args[1];
         var cha = args[2];
-        tmp.src = args[4];
+        var optionsrc = args[4];
+        tmp.src = arrow(cha, o_cha.owner);  
         tmp.label = 'cb::apply';
         tmp.type = 'buff';
         tmp.aid = cha.add( o_cha.actionid  ).readInt();
@@ -262,11 +259,10 @@ offset.characterbuff.apply
         tmp.ts = now();
         tmp.dmg = 0;
         tmp.comment = conid;
+
         commit(tmp);
     }
 });
-
-
 
 
 if (1)
