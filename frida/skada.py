@@ -204,7 +204,8 @@ def summ():
 
     s1 = '\n[+] summary:\n' + ssum
     sys.stderr.write(s1)
-    fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
+    if fout:
+        fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
 
     s2 = '\n[+] summary: '+ foutname +'\n' + ssum
     fsum = open('.skada.log', 'ab')
@@ -336,12 +337,12 @@ if __name__ == '__main__':
     try:
         while 1:
             input()
+            summ()
             if fout:
-                summ()
                 fout.close()
                 sys.stderr.write('[+] fclose\n')
             fout = None
-            foutopen()
+            #foutopen()
     except KeyboardInterrupt as e:
         if fout:
             s = summ()
