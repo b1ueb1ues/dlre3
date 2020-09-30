@@ -81,6 +81,41 @@ offset.characterbase.get_attack
     }
 });
 
+if(1)
+hook(
+offset.characterbase.get_hprate
+,{
+    onEnter: function(args){
+    },
+    onLeave: function(retval){
+        var r = ptr(this.context.sp-0x100+0x70);
+        // baseatk: 3124 with +60%hp
+        // r.writeFloat(1);    // atk: 4999
+        // r.writeFloat(0.9);  // atk: 4686
+        // r.writeFloat(0.8);  // atk: 4374
+        // r.writeFloat(0.75); // atk: 4218
+        // r.writeFloat(0.71); // atk: 4093
+        // r.writeFloat(0.7);  // atk: 4062
+        // r.writeFloat(0.6);  // atk: 4062
+        // r.writeFloat(0.5);  // atk: 4062
+        // r.writeFloat(0.4);  // atk: 4062
+        // r.writeFloat(0.3);  // atk: 4062
+        // r.writeFloat(0.2);  // atk: 4062
+        // r.writeFloat(0.01); // atk: 4062
+
+        // baseatk: 4374 with +35%hpatk
+        //r.writeFloat(0.6); // atk: 4941
+        //r.writeFloat(0.7); // atk: 4941
+        //r.writeFloat(0.8); // atk: 5130
+        //r.writeFloat(1); // atk: 5508
+        //3230
+        //r.writeFloat(0.9); // atk: 4845
+        //r.writeFloat(0.7); // atk: 4199
+        r.writeFloat(0.71); // atk: 4232
+    }
+});
+
+
 
 if(0)
 hook(
