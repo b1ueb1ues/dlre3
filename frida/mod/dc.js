@@ -81,6 +81,8 @@ offset.characterbase.get_attack
     }
 });
 
+//4665*1.28 * 1.1
+
 if(1)
 hook(
 offset.characterbase.get_hprate
@@ -111,7 +113,8 @@ offset.characterbase.get_hprate
         //3230
         //r.writeFloat(0.9); // atk: 4845
         //r.writeFloat(0.7); // atk: 4199
-        r.writeFloat(0.71); // atk: 4232
+        //r.writeFloat(0.6); // atk: 4232
+        //r.writeFloat(0.5); // atk: 4232
     }
 });
 

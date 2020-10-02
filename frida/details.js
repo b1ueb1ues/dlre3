@@ -294,6 +294,8 @@ offset.characterbuff.apply
         var tmp = {};
         tmp.dst = args[1];
         var cha = args[2];
+        if (cha == 0)
+            return;
         var optionsrc = args[4];
         var csstr_hitlabel = arrow(cha, o_cha.id);
         var hitlabel = csstr_hitlabel.add(0x14).readUtf16String();
