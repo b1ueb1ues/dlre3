@@ -1,5 +1,6 @@
 var ctx = {};
 
+savetheday();
 gl.sp();
 //gl.invincible();
 gl.dummy();
@@ -89,7 +90,7 @@ offset.characterbase.get_hprate
 ,{
     onEnter: function(args){
     },
-    onLeave: function(retval){
+    onLeave: function(retval) {
         var r = ptr(this.context.sp-0x100+0x70);
         // baseatk: 3124 with +60%hp
         // r.writeFloat(1);    // atk: 4999

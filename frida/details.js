@@ -336,3 +336,22 @@ offset.characterbuff.applybyability
     }
 });
 
+//CharacterBase$$ApplyDamage
+if (1)
+hook(offset.characterbase.applydamage, {
+    onEnter: function(args){
+        var o_cdi = offset.characterdamageintermediate;
+        var o_cha = offset.collisionhitattribute;
+
+        var cdi = args[1];
+        var cha = cdi.add( o_cdi.collisionhitattribute ).readPointer(); // collisionhitattribute
+
+        recount();
+        log.aid = cha.add( o_cha.actionid  ).readInt();
+        log.sid = cha.add( o_cha.skillid   ).readInt();
+        log.label = 'cb::ad';
+    },
+    onLeave: function(retval){
+    }
+});
+
