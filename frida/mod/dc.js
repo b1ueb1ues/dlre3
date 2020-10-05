@@ -82,7 +82,19 @@ offset.characterbase.get_attack
     }
 });
 
-//4665*1.28 * 1.1
+if(1)
+hook(
+offset.characterbase.get_defense
+,{
+    onEnter: function(args){
+    },
+    onLeave: function(retval){
+        var r = ptr(this.context.sp-0x90);
+        var d = r.readFloat();
+        console.log('get_def: '+d);
+    }
+});
+
 
 if(1)
 hook(

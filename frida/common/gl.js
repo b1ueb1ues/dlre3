@@ -70,7 +70,7 @@ gl.dummy = function () {
 
 gl.sp = function (sp, show) {
     if (!sp)
-        sp = 100000;
+        sp = 1000000;
 
     hook(
     offset.characterbase.recoverysp
