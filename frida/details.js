@@ -248,7 +248,7 @@ offset.chainctrl.add
         recount();
         log.aid = args[2].toInt32();
         log.sid = args[3].toInt32();
-        log.label = 'ct::add';
+        log.label = 'combo::add';
     },
     onLeave: function(ret){
     }
@@ -273,7 +273,7 @@ offset.characterbufftriggerreactionbomb.execdebuffextradamage
         log.aid = actioncontainer.add(
             offset.actioncontainer.actionid
         ).readS32();
-        log.label = 'cbtrb::eded'
+        log.label = 'buffbomb::eded'
     },
     onLeave: function(ret){
     }
@@ -300,7 +300,7 @@ offset.characterbuff.apply
         var csstr_hitlabel = arrow(cha, o_cha.id);
         var hitlabel = csstr_hitlabel.add(0x14).readUtf16String();
         tmp.src = arrow(cha, o_cha.owner);  
-        tmp.label = 'cb::apply';
+        tmp.label = 'cbuff::a';
         tmp.type = 'buff';
         tmp.aid = cha.add( o_cha.actionid  ).readInt();
         tmp.sid = cha.add( o_cha.skillid   ).readInt();
@@ -326,7 +326,7 @@ offset.characterbuff.applybyability
         tmp.src = args[2];
         tmp.aid = args[4];
         tmp.sid = args[5];
-        tmp.label = 'cb::aba';
+        tmp.label = 'cbuff::ability';
         tmp.type = 'buff';
         tmp.ts = now();
         tmp.dmg = 0;
@@ -349,7 +349,7 @@ hook(offset.characterbase.applydamage, {
         recount();
         log.aid = cha.add( o_cha.actionid  ).readInt();
         log.sid = cha.add( o_cha.skillid   ).readInt();
-        log.label = 'cb::ad';
+        log.label = 'cbase::applydmg';
     },
     onLeave: function(retval){
     }
