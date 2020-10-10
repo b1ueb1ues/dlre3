@@ -207,7 +207,7 @@ def summ():
     if fout:
         fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
 
-    s2 = '\n[+] summary: '+ foutname +'\n' + ssum
+    s2 = '\n[+] summary: '+ str(foutname) +'\n' + ssum
     fsum = open('.skada.log', 'ab')
     fwrite(fsum, s2)
     fsum.close()
