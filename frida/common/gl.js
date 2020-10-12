@@ -101,7 +101,7 @@ gl.rangeint = function (crit, proc) {
             //var pc_sas  = lib_base.add(
             //).toString(); //setactionskill
 
-            var caller = bt[0].toString()
+            var caller = bt[0].toString();
             if (caller == dc_cbd) {
                 this.dc_cbd = 1;
             } else if (caller == cbuf_ac){

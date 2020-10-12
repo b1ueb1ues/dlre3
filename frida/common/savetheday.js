@@ -21,6 +21,21 @@ function savetheday () {
     });
 
     // save the day
+    hook(
+    offset.recoverstaminamethodselectpopup.isinshopmantenance
+    ,{
+        onEnter: function(args){
+            //print('onEnter');
+            //var bt = Thread.backtrace(this.context);
+            //var caller = bt[0].toString();
+            //console.log(caller);
+        },
+        onLeave: function(ret){
+            ret.replace(1);
+        }
+    });
+
+    // save the day
     hook(offset.maingameleavealonechecker.setleavealonetime, {
         onEnter: function(args){
             this.tis = args[0];

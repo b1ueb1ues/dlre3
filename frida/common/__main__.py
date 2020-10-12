@@ -169,6 +169,7 @@ def get_symbol():
     for i in tmp:
         enemyskill[i[0]] = i[1]
     f.close()
+    return 1
 
 def save_symbol() :
     global skillname, charaname, enemyskill, abilityname

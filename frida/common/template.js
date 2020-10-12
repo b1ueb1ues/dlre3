@@ -1,6 +1,4 @@
-/**
- *  var table
- */
+
 var offset = {};
 offset.characterbase = {};
 offset.dragoncharacter = {};
@@ -28,6 +26,12 @@ offset.buffrecord = {};
 offset.ingameuictrl = {};
 offset.ctrloverdrive = {};
 offset.characterbuff = {};
+offset.recoverstaminamethodselectpopup = {};
+
+
+/**
+ *  var table
+ */
 
 offset.characterbase.characterid = @CharacterBase,<characterId>@;
 offset.characterbase.dungeonpartyindex = @CharacterBase,<dungeonPartyIndex>@;
@@ -132,6 +136,7 @@ offset.ctrloverdrive.ondamaged = #CtrlOverdrive$$OnDamaged#;
 offset.characterbuff.applycommon = #CharacterBuff$$ApplyCommon#;
 offset.characterbuff.apply = #CharacterBuff$$Apply,1#;
 offset.characterbuff.applybyability = #CharacterBuff$$ApplyByAbility#;
+offset.recoverstaminamethodselectpopup.isinshopmantenance = #RecoverStaminaMethodSelectPopup$$IsInShopMaintenance#;
 
 
 /**
