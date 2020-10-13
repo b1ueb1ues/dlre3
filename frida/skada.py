@@ -53,12 +53,14 @@ class Ds(object):
 
     def dps_total(this):
         if this.dt <= 0:
-            return '0'
+            #return '0'
+            return '%d'%this.sum
         return '%d'%(this.sum / this.dt)
 
     def dmg_sum(this):
         if this.dt <= 0:
-            return '0'
+            #return '0'
+            return '%d'%this.sum
         return '%d'%(this.sum)
 
     def dps_current(this):
@@ -215,16 +217,101 @@ def summ():
     teams = {}
     return ssum
 
-def on_message(message, data):
+
+def skada(message):
     global teams
-    global t0
     global skillname, charaname, enemyskill, abilityname
+    global fout
+    p = message['payload']
+    line = p.split(',')
+    tn = float(line[0])
+    srcid = line[2].split('(')[0].strip()
+
+    if srcid == '-1':
+        cname = 'dot'
+    elif srcid in charaname:
+        cname = charaname[srcid]
+    else:
+        cname = '_unknown_'
+
+    dmg = int(line[-3])
+    teamno = line[4]+line[5]
+    dst = line[10]
+    dstid, dstinid = dst[2:].split(':')
+    dsttype = dstinid[1]
+    teamdst = teamno+dst
+    actionid = line[11][1:-1]
+    skillid = line[12][1:-1]
+
+    inteamno = line[7]+line[6]
+    if line[7] == '-2':
+        idx = -2
+    elif line[7] == '-1':
+        idx = int(line[6])
+    else:
+        idx = int(inteamno)
+    #    if idx < -9:
+    #        idx = -10 - idx
+
+    #dp = line[5]+line[6]+line[7]+line[8]
+    if teamdst not in teams:
+        teams[teamdst] = Team(tn)
+
+    t = teams[teamdst]
+    if srcid != '-2': #buff
+        t.add(tn, idx, dmg, cname)
+
+    tmp = ','
+    tmp += cname+'->'
+    if dstid in charaname:
+        tmp += ' '+charaname[dstid]
+    if skillid in skillname:
+        tmp += ' '+skillname[skillid]
+    if skillid in abilityname:
+        tmp += ' '+abilityname[skillid]
+    if actionid in enemyskill:
+        tmp += ' '+enemyskill[actionid]
+
+    timing = t.timing()
+    cur = t.dps_current()
+    total = t.dps_total()
+    _sum = t.dmg_sum()
+    src = t.dps_src()
+
+    tmp += timing
+    tmp += _sum
+    tmp += cur
+    tmp += total
+    tmp += src
+
+    teaminteamno = ''
+    teaminteamno += ',team['+teamno+']:{'
+    for k in t.midx:
+        teaminteamno += '%02d '%(k)
+    teaminteamno = teaminteamno[:-1] + '}'
+    
+    tmp += teaminteamno
+
+    p += tmp + '\n'
+    if fout:
+        fwrite(fout, p)
+    else:
+        sys.stdout.write(p)
+    #debug{
+    if line[4] == '0' and dsttype=='1':
+        #sys.stderr.write(timing[1:]+',dst:'+dstid+teaminteamno+src+total+_sum+'\n')
+        name_dps, dmg = t.name_dps()
+        sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
+    #}debug
+
+def on_message(message, data):
+    global t0
     global fout
     if message['type'] == 'send' :
         if data == '1' or data == b'1':
             t0 = float(message['payload'])
             return
-        if data == '0' or data == b'0':
+        elif data == '0' or data == b'0':
             if fout:
                 summ()
             foutopen()
@@ -233,94 +320,13 @@ def on_message(message, data):
             else:
                 print(message['payload'])
             return
-        if data == 'stderr' or data == b'stderr':
+        elif data == 'stderr' or data == b'stderr':
             sys.stderr.write("[*] {0}\n".format(message['payload']))
             return
-        #p = "{0}".format(message['payload'])
-        p = message['payload']
-        line = p.split(',')
-        tn = float(line[0])
-        srcid = line[2].split('(')[0].strip()
-
-        if srcid == '-1':
-            cname = 'dot'
-        elif srcid in charaname:
-            cname = charaname[srcid]
         else:
-            cname = '_unknown_'
-
-        dmg = int(line[-3])
-        teamno = line[4]+line[5]
-        dst = line[10]
-        dstid, dstinid = dst[2:].split(':')
-        dsttype = dstinid[1]
-        teamdst = teamno+dst
-        actionid = line[11][1:-1]
-        skillid = line[12][1:-1]
-
-        inteamno = line[7]+line[6]
-        if line[7] == '-2':
-            idx = -2
-        elif line[7] == '-1':
-            idx = int(line[6])
-        else:
-            idx = int(inteamno)
-        #    if idx < -9:
-        #        idx = -10 - idx
-
-        #dp = line[5]+line[6]+line[7]+line[8]
-        if teamdst not in teams:
-            teams[teamdst] = Team(tn)
-
-        t = teams[teamdst]
-        if srcid != '-2': #buff
-            t.add(tn, idx, dmg, cname)
-
-        tmp = ','
-        tmp += cname+'->'
-        if dstid in charaname:
-            tmp += ' '+charaname[dstid]
-        if skillid in skillname:
-            tmp += ' '+skillname[skillid]
-        if skillid in abilityname:
-            tmp += ' '+abilityname[skillid]
-        if actionid in enemyskill:
-            tmp += ' '+enemyskill[actionid]
-
-        timing = t.timing()
-        cur = t.dps_current()
-        total = t.dps_total()
-        _sum = t.dmg_sum()
-        src = t.dps_src()
-
-        tmp += timing
-        tmp += _sum
-        tmp += cur
-        tmp += total
-        tmp += src
-
-        teaminteamno = ''
-        teaminteamno += ',team['+teamno+']:{'
-        for k in t.midx:
-            teaminteamno += '%02d '%(k)
-        teaminteamno = teaminteamno[:-1] + '}'
-        
-        tmp += teaminteamno
-
-        p += tmp + '\n'
-        if fout:
-            fwrite(fout, p)
-        else:
-            sys.stdout.write(p)
-        #debug{
-        if line[4] == '0' and dsttype=='1':
-            #sys.stderr.write(timing[1:]+',dst:'+dstid+teaminteamno+src+total+_sum+'\n')
-            name_dps, dmg = t.name_dps()
-            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
-        #}debug
+            skada(message)
     else:
         print(message)
-
 
 
 if __name__ == '__main__':
