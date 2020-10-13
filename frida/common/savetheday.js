@@ -27,11 +27,13 @@ function savetheday () {
         onEnter: function(args){
             //print('onEnter');
             //var bt = Thread.backtrace(this.context);
-            //var caller = bt[0].toString();
-            //console.log(caller);
+            //for (var i in bt) {
+            //    console.log(bt[i]);
+            //}
         },
         onLeave: function(ret){
             ret.replace(1);
+            send('fuck google', tstderr);
         }
     });
 
