@@ -1,38 +1,51 @@
 
 if(1)
 hook(
+0x02538240
+,{
+    onEnter: function(args){
+        print('onEnter httphelper send');
+    },
+    onLeave: function(ret){
+        print('onLeave httphelper send');
+    }
+});
+
+if(1)
+hook(
 offset.recoverstaminamethodselectpopup.isinshopmantenance
 ,{
     onEnter: function(args){
-        //print('onEnter');
+        print('onEnter isinshopmantenace');
         //var bt = Thread.backtrace(this.context);
         //var caller = bt[0].toString();
         //console.log(caller);
     },
     onLeave: function(ret){
+        print('onLeave isinshopmantenace');
+        print(ret);
         ret.replace(1);
     }
 });
 
-if(0)
+if(1)
 hook(
-0x01b573a0
+0x01b573a0 //__c__DisplayClass15_0::_CreateModule_b__1
 ,{
     onEnter: function(args){
-        print('onEnter');
-        bt(this);
+        print('onEnter createmodule');
     },
     onLeave: function(ret){
-        print('onLeave');
+        print('onLeave createmodule');
     }
 });
 
 if(0)
 hook(
-0x02992298
+0x02992298 //PaymentTimer::Update
 ,{
     onEnter: function(args){
-        print('onEnter payupdate');
+        print('onEnter timerupdate');
         //var tis = args[0];
         //var isTimeout = arrow(tis, 0x20);
         //var startTime = arrow.f(tis, 0x1c);
@@ -48,7 +61,7 @@ hook(
         //print(a.readPointer(), b, c.readPointer(), args[0]);
     },
     onLeave: function(ret){
-        print('onLeave');
+        print('onLeave timerupdate');
     }
 });
 
@@ -59,26 +72,48 @@ hook(
 ,{
     onEnter: function(args){
         print('onEnter getallitemlist');
+        bt(this);
+       // var dat_ = lib_base.add(0x073ca148);
+       // console.log(hexdump(dat_.add(0xb8).readPointer().add(0x10).readPointer()));
     },
     onLeave: function(ret){
         print('onLeave getallitemlist');
+       // var dat_ = lib_base.add(0x073ca148);
+       // console.log(hexdump(dat_.add(0xb8).readPointer().add(0x10).readPointer()));
     }
 });
 
 
 if(1)
 hook(
-0x2988CE0
+0x2988CE0 //PaymentTimer::StartCounting
 ,{
     onEnter: function(args){
-        print('onEnter');
+        print('onEnter timerstart');
         bt(this);
         var t = ptr(this.context.sp-0x80-0x10);
         var timeout = t.readFloat();
         print(timeout);
-        //t.writeFloat(0.01);
+        t.writeFloat(0.01);
     },
     onLeave: function(ret){
-        print('onLeave');
+        print('onLeave timerstart');
+        var t = ptr(this.context.sp-0x80-0x10);
+        t.writeFloat(0.01);
     }
 });
+
+
+
+
+if(0) {
+    var p_shop = lib_base.add(
+        0x02988b9c //npf get all item list
+    );
+    function f_new_shop() {
+        print('replace');
+    }
+    var cb_shop = new NativeCallback(f_new_shop, 'void', []);
+    Interceptor.replace(p_shop, cb_shop);
+}
+
