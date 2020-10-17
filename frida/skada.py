@@ -308,17 +308,17 @@ def skada(message):
         sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
     #}debug
 
-toggle = 1;
+disable = 0
 def on_message(message, data):
     global t0
     global fout
-    global toggle
+    global disable
     if message['type'] == 'send' :
-        if data == '1' or data == b'1':
+        if data == '0' or data == b'0':
             t0 = float(message['payload'])
-            toggle = 1
+            disable = 0
             return
-        elif data == '0' or data == b'0':
+        elif data == '1' or data == b'1':
             if fout:
                 summ()
             foutopen()
@@ -331,7 +331,7 @@ def on_message(message, data):
             sys.stderr.write("[*] {0}\n".format(message['payload']))
             return
         else:
-            if toggle:
+            if not disable:
                 skada(message)
             return;
     else:
@@ -353,7 +353,7 @@ if __name__ == '__main__':
         while 1:
             input()
             summ()
-            toggle = 0
+            disable = 1
             if fout:
                 fout.close()
                 sys.stderr.write('[+] fclose\n')

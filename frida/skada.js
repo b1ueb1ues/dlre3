@@ -25,9 +25,9 @@ function now() { return g_gpt(mgc).toFixed(3); }
  * send t0 first
  */
 if(now_init()==0)
-    send(0,tone);
+    send(0,tzero);
 else
-    send(now(),tone);
+    send(now(),tzero);
 
 
 function csv() {
@@ -140,10 +140,10 @@ offset.maingamectrl.playqueststart,
 {
     onEnter: function(args){
         now_init();
-        send(0, tone);
+        send(0, tzero);
         var s = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
         s += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-'
-        send(s, tzero);
+        send(s, tone);
         send('quest_start\n==============================', tstderr);
     },
     onLeave: function(retval){
