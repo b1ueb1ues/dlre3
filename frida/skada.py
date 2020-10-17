@@ -180,9 +180,11 @@ def foutopen():
 def fwrite(f, string):
     f.write(string.encode('utf8'))
 
+
+fsum = None
 teams = {}
 def summ():
-    global teams, foutname
+    global teams, foutname, fsum
     if teams == {}:
         return 0
     ssum = ''
@@ -211,9 +213,10 @@ def summ():
         s2 = '\n[+] summary: '+ str(foutname) +'\n' + ssum
     else:
         s2 = '\n[+] summary: stdout\n' + ssum
-    fsum = open('.skada.log', 'ab')
+
+    if not fsum:
+        fsum = open('.skada.log', 'ab')
     fwrite(fsum, s2)
-    fsum.close()
 
     teams = {}
     return ssum
@@ -305,12 +308,15 @@ def skada(message):
         sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
     #}debug
 
+toggle = 1;
 def on_message(message, data):
     global t0
     global fout
+    global toggle
     if message['type'] == 'send' :
         if data == '1' or data == b'1':
             t0 = float(message['payload'])
+            toggle = 1
             return
         elif data == '0' or data == b'0':
             if fout:
@@ -325,7 +331,9 @@ def on_message(message, data):
             sys.stderr.write("[*] {0}\n".format(message['payload']))
             return
         else:
-            skada(message)
+            if toggle:
+                skada(message)
+            return;
     else:
         print(message)
 
@@ -345,6 +353,7 @@ if __name__ == '__main__':
         while 1:
             input()
             summ()
+            toggle = 0
             if fout:
                 fout.close()
                 sys.stderr.write('[+] fclose\n')
