@@ -208,8 +208,9 @@ def summ():
     sys.stderr.write(s1)
     if fout:
         fwrite(fout, '-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"%s"'%s1)
-
-    s2 = '\n[+] summary: '+ str(foutname) +'\n' + ssum
+        s2 = '\n[+] summary: '+ str(foutname) +'\n' + ssum
+    else:
+        s2 = '\n[+] summary: stdout\n' + ssum
     fsum = open('.skada.log', 'ab')
     fwrite(fsum, s2)
     fsum.close()
