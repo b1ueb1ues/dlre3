@@ -300,7 +300,7 @@ offset.characterbuff.apply
         var csstr_hitlabel = arrow(cha, o_cha.id);
         var hitlabel = csstr_hitlabel.add(0x14).readUtf16String();
         tmp.src = arrow(cha, o_cha.owner);  
-        tmp.label = 'cbuff::a';
+        tmp.label = 'cbuff::apply';
         tmp.type = 'buff';
         tmp.aid = cha.add( o_cha.actionid  ).readInt();
         tmp.sid = cha.add( o_cha.skillid   ).readInt();
@@ -349,7 +349,7 @@ hook(offset.characterbase.applydamage, {
         recount();
         log.aid = cha.add( o_cha.actionid  ).readInt();
         log.sid = cha.add( o_cha.skillid   ).readInt();
-        log.label = 'cbase::applydmg';
+        log.label = 'cbase::apply';
     },
     onLeave: function(retval){
     }
