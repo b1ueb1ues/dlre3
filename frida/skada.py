@@ -12,6 +12,7 @@ import sys
 import re
 import conf
 from common.tl import skillname, charaname, enemyskill, abilityname
+#import curses
 
 t0 = 0
 fout = None
@@ -166,9 +167,11 @@ class Team(object):
         for i in tmp:
             if i != -2:
                 m = this.member[i]
-                ret += '\t%s:\t%s\n'%(m.name, m.dps_total())
+                #ret += '\t%s: %s\n'%(m.name, m.dps_total())
+                ret += '\t%s\t: %s\n'%(m.dps_total(), m.name)
         if -2 in tmp:
-            ret += '\tdot:\t'+this.member[-2].dps_total() + '\n'
+            #ret += '\tdot: '+this.member[-2].dps_total() + '\n'
+            ret += '\t%s\t: dot\n'%(this.member[-2].dps_total())
         else:
             ret = ret[:-2]
         ret += '\n'
@@ -327,10 +330,23 @@ def skada(message):
     else:
         sys.stdout.write(p)
     #debug{
+    prev_len = 0
     if line[4] == '0' and dsttype=='1':
         #sys.stderr.write(timing[1:]+',dst:'+dstid+teaminteamno+src+total+_sum+'\n')
-        name_dps, dmg = t.name_dps_vertical()
-        sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
+
+        if 1:
+            name_dps, dmg = t.name_dps_vertical()
+            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
+        else :
+            name_dps, dmg = t.name_dps_horizon()
+            output = '\r%.3f, dps(%s->%s):[ %s ]'%(t.tn, teamno, dstid, name_dps)
+            output_len = len(output)
+            if output_len >= prev_len:
+                sys.stderr.write(output)
+            else:
+                space = ' ' * (prev_len - output_len)
+                sys.stderr.write(output + space)
+            prev_len = output_len
     #}debug
 
 disable = 0
