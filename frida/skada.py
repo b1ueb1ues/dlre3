@@ -77,6 +77,7 @@ class Team(object):
         this.member = {}
         this.midx = []
         this.dt = 0;
+        this.name_dps = this.name_dps_vertical
 
     def add(this, timenow, idx, dmg, name=''):
         if idx not in this.member:
@@ -135,7 +136,7 @@ class Team(object):
         ret = ret[:-1] + ']'
         return ret
 
-    def name_dps(this):
+    def name_dps_horizon(this):
         ret = ''
         tmp = this.midx[:]
         tmp.sort()
@@ -147,6 +148,30 @@ class Team(object):
             ret += 'dot:'+this.member[-2].dps_total()
         else:
             ret = ret[:-2]
+        ret2 = ''
+        for i in tmp:
+            if i != -2:
+                m = this.member[i]
+                ret2 += '%s '%(m.dmg_sum())
+        if -2 in tmp:
+            ret2 += this.member[-2].dmg_sum()
+        else:
+            ret2 = ret2[:-1]
+        return ret, ret2
+
+    def name_dps_vertical(this):
+        ret = '\n'
+        tmp = this.midx[:]
+        tmp.sort()
+        for i in tmp:
+            if i != -2:
+                m = this.member[i]
+                ret += '\t%s:\t%s\n'%(m.name, m.dps_total())
+        if -2 in tmp:
+            ret += '\tdot:\t'+this.member[-2].dps_total() + '\n'
+        else:
+            ret = ret[:-2]
+        ret += '\n'
         ret2 = ''
         for i in tmp:
             if i != -2:
@@ -198,7 +223,7 @@ def summ():
         t_end = t.tn
         t_start = t.t1
         duration = t_end - t_start
-        name_dps, dmg_sum = t.name_dps()
+        name_dps, dmg_sum = t.name_dps_horizon()
         ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs]  dmg:[%s]\n'%(dstid, teamid, t_start, t_end, dmg_sum)
         ssum += '\tdps: [ %s ] %.2fs\n'%(name_dps, duration)
         #ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs] %.2fs\n'%(dstid, teamid, t_start, t_end, duration)
@@ -304,7 +329,7 @@ def skada(message):
     #debug{
     if line[4] == '0' and dsttype=='1':
         #sys.stderr.write(timing[1:]+',dst:'+dstid+teaminteamno+src+total+_sum+'\n')
-        name_dps, dmg = t.name_dps()
+        name_dps, dmg = t.name_dps_vertical()
         sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
     #}debug
 
