@@ -33,7 +33,7 @@ function savetheday () {
         },
         onLeave: function(ret){
             ret.replace(1);
-            send('fuck google', tstderr);
+            //send('fuck google', tstderr);
         }
     });
 
