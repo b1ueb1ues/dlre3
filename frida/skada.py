@@ -9,15 +9,24 @@ ENGINE = 'details.js'
 import lib
 import time
 import sys
+import os
 import re
 import conf
 from common.tl import skillname, charaname, enemyskill, abilityname
-#import curses
 
 t0 = 0
 fout = None
 fpname = ''
 foutname = None
+redir = 0
+if os.name == 'nt':
+    iswin = 1
+else:
+    iswin = 0
+
+def ctrlp(n):
+    if n > 0:
+        sys.stderr.write('\x1b[1A\x1b[2K'*n)
 
 class Nilds(object):
     def dps_total(this):
@@ -88,7 +97,7 @@ class Team(object):
         #for i in this.member.values():
         #    i.refresh(timenow)
         this.dt = timenow - this.t1
-        this.tn = timenow - this.t0
+        this.tn = timenow
 
     def dps_total(this):
         ret = ',dps_total:{'
@@ -168,10 +177,14 @@ class Team(object):
             if i != -2:
                 m = this.member[i]
                 #ret += '\t%s: %s\n'%(m.name, m.dps_total())
-                ret += '\t%s\t: %s\n'%(m.dps_total(), m.name)
+                dps = m.dps_total()
+                dps += ' ' * (10 - len(dps))
+                ret += '\t%s: %s\n'%(dps, m.name)
         if -2 in tmp:
             #ret += '\tdot: '+this.member[-2].dps_total() + '\n'
-            ret += '\t%s\t: dot\n'%(this.member[-2].dps_total())
+            dps = this.member[-2].dps_total()
+            dps += ' ' * (10 - len(dps))
+            ret += '\t%s: dot\n'%(dps)
         else:
             ret = ret[:-2]
         ret += '\n'
@@ -203,6 +216,14 @@ def foutopen():
     else:
         fout = None
     teams = {}
+    if fout:
+        tmp = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
+        tmp += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-\n'
+        fwrite(fout, tmp)
+    if redir:
+        tmp = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
+        tmp += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-\n'
+        sys.stdout.write(tmp)
 
 
 def fwrite(f, string):
@@ -212,9 +233,10 @@ def fwrite(f, string):
 fsum = None
 teams = {}
 def summ():
-    global teams, foutname, fsum
+    global teams, foutname, fsum, prev_len
     if teams == {}:
         return 0
+    prev_len = 0
     ssum = ''
     for i in teams:
         dstid, tmp = i.split(':')
@@ -223,9 +245,9 @@ def summ():
             continue
         teamid, dstid = dstid.split('->')
         t = teams[i]
-        t_end = t.tn
         t_start = t.t1
-        duration = t_end - t_start
+        duration = t.dt
+        t_end = t_start + duration
         name_dps, dmg_sum = t.name_dps_horizon()
         ssum += 'dst:%s  team:%s  t:[%.2fs->%.2fs]  dmg:[%s]\n'%(dstid, teamid, t_start, t_end, dmg_sum)
         ssum += '\tdps: [ %s ] %.2fs\n'%(name_dps, duration)
@@ -250,10 +272,12 @@ def summ():
     return ssum
 
 
+prev_len = 0
 def skada(message):
     global teams
     global skillname, charaname, enemyskill, abilityname
     global fout
+    global prev_len
     p = message['payload']
     line = p.split(',')
     tn = float(line[0])
@@ -324,36 +348,42 @@ def skada(message):
     
     tmp += teaminteamno
 
-    p += tmp + '\n'
     if fout:
+        p += tmp + '\n'
         fwrite(fout, p)
-    else:
+    elif redir:
+        p += tmp + '\r\n'
         sys.stdout.write(p)
     #debug{
-    prev_len = 0
     if line[4] == '0' and dsttype=='1':
-        #sys.stderr.write(timing[1:]+',dst:'+dstid+teaminteamno+src+total+_sum+'\n')
-
-        if 1:
-            name_dps, dmg = t.name_dps_vertical()
-            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
-        else :
+        if iswin :   # horizon
             name_dps, dmg = t.name_dps_horizon()
             output = '\r%.3f, dps(%s->%s):[ %s ]'%(t.tn, teamno, dstid, name_dps)
             output_len = len(output)
             if output_len >= prev_len:
                 sys.stderr.write(output)
             else:
-                space = ' ' * (prev_len - output_len)
+                space = '  ' * (prev_len - output_len)
                 sys.stderr.write(output + space)
             prev_len = output_len
+        else:  # vertical
+            ctrlp(prev_len)
+            name_dps, dmg = t.name_dps_vertical()
+            #sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
+            out = '%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps)
+            prev_len = 0
+            for i in out:
+                if i == '\n':
+                    prev_len += 1
+            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
+            
     #}debug
 
 disable = 0
 def on_message(message, data):
     global t0
     global fout
-    global disable
+    global disable, prev_len
     if message['type'] == 'send' :
         if data == '0' or data == b'0':
             t0 = float(message['payload'])
@@ -363,13 +393,10 @@ def on_message(message, data):
             if fout:
                 summ()
             foutopen()
-            if fout:
-                fwrite(fout, message['payload']+'\n')
-            else:
-                print(message['payload'])
             return
         elif data == 'stderr' or data == b'stderr':
             sys.stderr.write("[*] {0}\n".format(message['payload']))
+            prev_len = 0
             return
         else:
             if not disable:
@@ -379,15 +406,18 @@ def on_message(message, data):
         print(message)
 
 
+
 if __name__ == '__main__':
     import os
     if len(sys.argv) > 1:
         fpname = sys.argv[1]
-        if '/' not in fpname :
+        if fpname in ['0', '/dev/null', 'null']:
+            fpname = None
+        elif '/' not in fpname :
             fpname = 'recount/'+fpname
     else:
         fpname = None
-
+        redir = 1
     foutopen()
     lib.run(ENGINE, conf, on_message)
     try:
@@ -401,8 +431,7 @@ if __name__ == '__main__':
             fout = None
             #foutopen()
     except KeyboardInterrupt as e:
-        if fout:
-            s = summ()
+        summ()
         #sys.stderr.write(e)
         exit()
 
