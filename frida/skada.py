@@ -170,7 +170,7 @@ class Team(object):
         return ret, ret2
 
     def name_dps_vertical(this):
-        ret = '\n'
+        ret = ''
         tmp = this.midx[:]
         tmp.sort()
         for i in tmp:
@@ -185,9 +185,6 @@ class Team(object):
             dps = this.member[-2].dps_total()
             dps += ' ' * (10 - len(dps))
             ret += '\t%s: dot\n'%(dps)
-        else:
-            ret = ret[:-2]
-        ret += '\n'
         ret2 = ''
         for i in tmp:
             if i != -2:
@@ -358,7 +355,7 @@ def skada(message):
     if line[4] == '0' and dsttype=='1':
         if iswin :   # horizon
             name_dps, dmg = t.name_dps_horizon()
-            output = '\r%.3f, dps(%s->%s):[ %s ]'%(t.tn, teamno, dstid, name_dps)
+            output = '\r%.3f, id:%s->%s, dps:[ %s ]'%(t.tn, teamno, dstid, name_dps)
             output_len = len(output)
             if output_len >= prev_len:
                 sys.stderr.write(output)
@@ -370,12 +367,12 @@ def skada(message):
             ctrlp(prev_len)
             name_dps, dmg = t.name_dps_vertical()
             #sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
-            out = '%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps)
+            out = '%.3f, id:%s->%s, dps:[\n%s]\n'%(t.tn, teamno, dstid, name_dps)
             prev_len = 0
             for i in out:
                 if i == '\n':
                     prev_len += 1
-            sys.stderr.write('%.3f, dps(%s->%s):[ %s ]\n'%(t.tn, teamno, dstid, name_dps))
+            sys.stderr.write(out)
             
     #}debug
 
@@ -390,8 +387,7 @@ def on_message(message, data):
             disable = 0
             return
         elif data == '1' or data == b'1':
-            if fout:
-                summ()
+            summ()
             foutopen()
             return
         elif data == 'stderr' or data == b'stderr':
