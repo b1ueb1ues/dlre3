@@ -141,9 +141,7 @@ offset.maingamectrl.playqueststart,
     onEnter: function(args){
         now_init();
         send(0, tzero);
-        var s = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
-        s += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-'
-        send(s, tone);
+        send(0, tone);
         send('quest_start\n==============================', tstderr);
     },
     onLeave: function(retval){

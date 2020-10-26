@@ -197,6 +197,7 @@ class Team(object):
         return ret, ret2
 
 
+
 def foutopen():
     global fout, fpname, foutname, teams
     if fpname:
@@ -384,20 +385,24 @@ def on_message(message, data):
     if message['type'] == 'send' :
         if data == '0' or data == b'0':
             t0 = float(message['payload'])
-            disable = 0
+            disable = -1
             return
         elif data == '1' or data == b'1':
             summ()
-            foutopen()
             return
         elif data == 'stderr' or data == b'stderr':
             sys.stderr.write("[*] {0}\n".format(message['payload']))
             prev_len = 0
             return
         else:
-            if not disable:
+            if disable == 0:
                 skada(message)
-            return;
+                return
+            elif disable == -1:
+                foutopen()
+                disable = 0
+                skada(message)
+            return
     else:
         print(message)
 
@@ -414,7 +419,6 @@ if __name__ == '__main__':
     else:
         fpname = None
         redir = 1
-    foutopen()
     lib.run(ENGINE, conf, on_message)
     try:
         while 1:
