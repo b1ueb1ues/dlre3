@@ -363,7 +363,7 @@ function afflic(ab, cha, ace) {
     ).readS32();
 
     var cb = arrow(ab, offset.abnormalstatusbase.owner);
-    if (!cb)
+    if (cb == 0)
         return;
     var cparam = arrow(cb, offset.characterbase.characterparameter);
     var paramtotal = arrow(cparam, offset.characterparameter.fptotal);
