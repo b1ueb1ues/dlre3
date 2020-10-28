@@ -364,6 +364,8 @@ def skada(message):
                 space = '  ' * (prev_len - output_len)
                 sys.stderr.write(output + space)
             prev_len = output_len
+        elif redir:
+            pass
         else:  # vertical
             ctrlp(prev_len)
             name_dps, dmg = t.name_dps_vertical()

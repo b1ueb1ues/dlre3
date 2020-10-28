@@ -374,7 +374,9 @@ function afflic(ab, cha, ace) {
     var rate = arrow.i(ace, offset.actionconditionelement.rate);
 
     var dst = cb;
-    var src = arrow(cha, offset.collisionhitattribute.owner);
+    var src = 0;
+    if (cha != 0)
+        var src = arrow(cha, offset.collisionhitattribute.owner);
 
     var tmp = {};
     tmp.dst = dst;
