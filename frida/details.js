@@ -1,6 +1,6 @@
 // god like
-gl.dummy();
-gl.sp();
+//gl.dummy();
+//gl.sp();
 //gl.attack(10000);
 //gl.invincible();
 
