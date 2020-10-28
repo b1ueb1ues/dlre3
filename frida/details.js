@@ -1,6 +1,6 @@
 // god like
-//gl.dummy();
-//gl.sp();
+gl.dummy();
+gl.sp();
 //gl.attack(10000);
 //gl.invincible();
 
@@ -173,13 +173,16 @@ function at2name(at){
         case 2: ab = 'burn'; break;
         case 3: ab = 'freeze'; break;
         case 4: ab = 'paralysis'; break;
-        case 5: ab = 'darkness'; break;
+        case 5: ab = 'blind'; break;
         case 6: ab = 'stun'; break;
         case 7: ab = 'curse'; break;
         case 8: ab = 'rebirth'; break;
         case 9: ab = 'bog'; break;
         case 10: ab = 'sleep'; break;
         case 11: ab = 'frostbite'; break;
+        case 12: ab = 'flash'; break;
+        case 13: ab = 'wind'; break;
+        case 13: ab = 'darkabs'; break;
         case 99: ab = 'all'; break;
         default: ab = 'null'; break;
     }
@@ -352,4 +355,63 @@ hook(offset.characterbase.applydamage, {
     onLeave: function(retval){
     }
 });
+
+
+function afflic(ab, cha, ace) {
+    var atype = ptr(ace).add(
+        offset.actionconditionelement.atype
+    ).readS32();
+
+    var cb = arrow(ab, offset.abnormalstatusbase.owner);
+    if (!cb)
+        return;
+    var cparam = arrow(cb, offset.characterbase.characterparameter);
+    var paramtotal = arrow(cparam, offset.characterparameter.fptotal);
+    var resists = arrow(paramtotal, offset.fluctuationparameter.abnormalresist);
+    //showresist(resists);
+    var resist = resists.add(0x20+atype*4).readFloat().toFixed(2);
+
+    var rate = arrow.i(ace, offset.actionconditionelement.rate);
+
+    var dst = cb;
+    var src = arrow(cha, offset.collisionhitattribute.owner);
+
+    var tmp = {};
+    tmp.dst = dst;
+    tmp.src = src;
+    tmp.aid = at2name(atype);
+    tmp.sid = 'rate:'+rate;
+    tmp.label = 'afflic';
+    tmp.type = 'buff';
+    tmp.ts = now();
+    tmp.dmg = 0;
+    tmp.comment = 'resist:' + resist;
+
+    commit(tmp);
+}
+
+hook(
+offset.abnormalstatusbase.setup
+,{
+    onEnter: function(args){
+        var tis = args[0];
+        var cb = args[1];
+        var cha = args[2];
+        var ace = args[3];
+        afflic(tis, cha, ace);
+    }
+});
+
+
+hook(
+offset.abnormalstatusenemybase.addition
+,{
+    onEnter: function(args){
+        var tis = args[0];
+        var cha = args[1];
+        var ace = args[2];
+        afflic(tis, cha, ace);
+    }
+});
+
 

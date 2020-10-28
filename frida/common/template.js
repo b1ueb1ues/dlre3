@@ -27,6 +27,8 @@ offset.ingameuictrl = {};
 offset.ctrloverdrive = {};
 offset.characterbuff = {};
 offset.recoverstaminamethodselectpopup = {};
+offset.abnormalstatusbase = {};
+offset.abnormalstatusenemybase = {};
 
 
 /**
@@ -80,6 +82,11 @@ offset.actioncontainer.actionid = @ActionContainer,actionId@;
 offset.buffrecord.damage = @BuffRecord,Damage@;
 offset.buffrecord.dst = @BuffRecord,TargetChara@;
 offset.buffrecord.src = @BuffRecord,BuffAppender@;
+
+offset.actionconditionelement.atype = @ActionConditionElement,AbnormalStatusType _Type@;
+offset.actionconditionelement.rate = @ActionConditionElement,int _Rate@;
+
+offset.abnormalstatusbase.owner = @AbnormalStatusBase,<owner>@;
 
 
 /**
@@ -137,6 +144,10 @@ offset.characterbuff.applycommon = #CharacterBuff$$ApplyCommon#;
 offset.characterbuff.apply = #CharacterBuff$$Apply,1#;
 offset.characterbuff.applybyability = #CharacterBuff$$ApplyByAbility#;
 offset.recoverstaminamethodselectpopup.isinshopmantenance = #RecoverStaminaMethodSelectPopup$$IsInShopMaintenance#;
+
+offset.abnormalstatusbase.setup = #AbnormalStatusBase$$Setup#;
+offset.abnormalstatusbase.calcslipdamage = #AbnormalStatusBase$$CalcSlipDamage#;
+offset.abnormalstatusenemybase.addition = #AbnormalStatusEnemyBase$$Addition#;
 
 
 /**

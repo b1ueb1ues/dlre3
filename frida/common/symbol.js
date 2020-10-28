@@ -27,6 +27,8 @@ offset.ingameuictrl = {};
 offset.ctrloverdrive = {};
 offset.characterbuff = {};
 offset.recoverstaminamethodselectpopup = {};
+offset.abnormalstatusbase = {};
+offset.abnormalstatusenemybase = {};
 
 
 /**
@@ -80,6 +82,11 @@ offset.actioncontainer.actionid = 0x60;
 offset.buffrecord.damage = 0x48;
 offset.buffrecord.dst = 0x50;
 offset.buffrecord.src = 0x58;
+
+offset.actionconditionelement.atype = 0x14;
+offset.actionconditionelement.rate = 0x70;
+
+offset.abnormalstatusbase.owner = 0x18;
 
 
 /**
@@ -137,6 +144,10 @@ offset.characterbuff.applycommon = 0x235CA14;
 offset.characterbuff.apply = 0x23499A0;
 offset.characterbuff.applybyability = 0x235D6B4;
 offset.recoverstaminamethodselectpopup.isinshopmantenance = 0x1B5F960;
+
+offset.abnormalstatusbase.setup = 0x1E39AD0;
+offset.abnormalstatusbase.calcslipdamage = 0x1E39F58;
+offset.abnormalstatusenemybase.addition = 0x1E3CAA0;
 
 
 /**
