@@ -1,5 +1,5 @@
 
-if(1)
+if(0)
 hook(
 0x02538240
 ,{
@@ -11,7 +11,7 @@ hook(
     }
 });
 
-if(1)
+if(0)
 hook(
 offset.recoverstaminamethodselectpopup.isinshopmantenance
 ,{
@@ -28,7 +28,7 @@ offset.recoverstaminamethodselectpopup.isinshopmantenance
     }
 });
 
-if(1)
+if(0)
 hook(
 0x01b573a0 //__c__DisplayClass15_0::_CreateModule_b__1
 ,{
@@ -66,7 +66,7 @@ hook(
 });
 
 
-if(1)
+if(0)
 hook(
 0x2988B9C
 ,{
@@ -86,18 +86,13 @@ hook(
 
 if(1)
 hook(
-0x2988CE0 //PaymentTimer::StartCounting
+0x029d10e8 //PaymentTimer::StartCounting
 ,{
     onEnter: function(args){
-        print('onEnter timerstart');
-        bt(this);
         var t = ptr(this.context.sp-0x80-0x10);
-        var timeout = t.readFloat();
-        print(timeout);
         t.writeFloat(0.01);
     },
     onLeave: function(ret){
-        print('onLeave timerstart');
         var t = ptr(this.context.sp-0x80-0x10);
         t.writeFloat(0.01);
     }
@@ -105,10 +100,23 @@ hook(
 
 
 
+if(1)
+hook(
+0x03f564d0 //ismobile
+,{
+    onEnter: function(args){
+        print('onEnter ismob');
+    },
+    onLeave: function(ret){
+        print('onLeave ismob');
+        ret.replace(0);
+    }
+});
 
-if(0) {
+if(1) {
     var p_shop = lib_base.add(
-        0x02988b9c //npf get all item list
+        //0x02988b9c //npf get all item list
+        0x03f5cd04 // NativeBridgeImpl::VirtualCurrencyBundleGetAll
     );
     function f_new_shop() {
         print('replace');
