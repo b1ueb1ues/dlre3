@@ -86,7 +86,7 @@ hook(
 
 if(1)
 hook(
-0x029d10e8 //PaymentTimer::StartCounting
+offset.paymenttimer.startcounting //PaymentTimer::StartCounting
 ,{
     onEnter: function(args){
         var t = ptr(this.context.sp-0x80-0x10);
@@ -102,13 +102,11 @@ hook(
 
 if(1)
 hook(
-0x03f564d0 //ismobile
+offset.platformutil.ismobile
 ,{
     onEnter: function(args){
-        print('onEnter ismob');
     },
     onLeave: function(ret){
-        print('onLeave ismob');
         ret.replace(0);
     }
 });

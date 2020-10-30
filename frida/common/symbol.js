@@ -29,6 +29,8 @@ offset.characterbuff = {};
 offset.recoverstaminamethodselectpopup = {};
 offset.abnormalstatusbase = {};
 offset.abnormalstatusenemybase = {};
+offset.paymenttimer = {};
+offset.platformutil = {};
 
 
 /**
@@ -148,6 +150,8 @@ offset.recoverstaminamethodselectpopup.isinshopmantenance = 0x1B5F960;
 offset.abnormalstatusbase.setup = 0x1E39AD0;
 offset.abnormalstatusbase.calcslipdamage = 0x1E39F58;
 offset.abnormalstatusenemybase.addition = 0x1E3CAA0;
+offset.paymenttimer.startcounting = 0x29D10E8;
+offset.platformutil.ismobile = 0x3F564D0;
 
 
 /**
