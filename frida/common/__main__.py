@@ -32,6 +32,7 @@ def prepare():
             lout = line
         print(lout.strip())
         fout.write(lout)
+    fout.close()
 
 def get_classes(path_cs):
     global classes
@@ -178,6 +179,7 @@ def save_symbol() :
     fout.write('charaname = %s\n'%str(charaname))
     fout.write('enemyskill = %s\n'%str(enemyskill))
     fout.write('abilityname = %s\n'%str(abilityname))
+    fout.close()
     print('\n[+] save', path_tlout)
 
 
