@@ -4,15 +4,15 @@ import re
 path_py = '../working/script.py'
 path_cs = '../working/dump.cs'
 path_gh = '../working/ghidra.out'
-path_out = 'common/symbol.js'
-path_template = 'common/template.js'
-path_tlin = 'common/textlabel.asset'
-path_tlout = 'common/tl.py'
+path_out = 'auto/symbol.js'
+path_template = 'jnclude/template.js'
+path_tlin = 'auto/textlabel.asset'
+path_tlout = 'auto/tl.py'
 
 functions = []
 classes = {}
 ghs = []
-def prepare():
+def js_symbol():
     global classes
     global functions
     global ghis
@@ -133,9 +133,13 @@ charaname = {}
 enemyskill = {}
 abilityname = {}
 
-def get_symbol():
+def get_py_symbol():
     global skillname, charaname, enemyskill, abilityname
-    f = open(path_tlin,'rb')
+    try:
+        f = open(path_tlin,'rb')
+    except Exception as e:
+        print('\n[+] no textlabel update')
+        return 0;
     data = f.read().decode()
     tmp = re.findall(r'CHARA_NAME_(\d+)".\n.*_Text = "(.*)"', data)
     for i in tmp:
@@ -172,7 +176,7 @@ def get_symbol():
     f.close()
     return 1
 
-def save_symbol() :
+def save_py_symbol() :
     global skillname, charaname, enemyskill, abilityname
     fout = open(path_tlout, 'w')
     fout.write('skillname = %s\n'%str(skillname))
@@ -184,6 +188,6 @@ def save_symbol() :
 
 
 if __name__ == '__main__':
-    prepare()
-    get_symbol()
-    save_symbol()
+    js_symbol()
+    if get_py_symbol():
+        save_py_symbol()

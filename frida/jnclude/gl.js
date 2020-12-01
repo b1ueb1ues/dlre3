@@ -68,8 +68,8 @@ gl.dummy = function () {
     });
 }
 
-gl.sp = function (sp, show) {
-    if (sp == 0)
+gl.sp = function (show, sp) {
+    if (sp == undefined)
         sp = 1000000;
 
     hook(
@@ -78,7 +78,7 @@ gl.sp = function (sp, show) {
         onEnter: function(args){
             if (show)
                 console.log('** sp: '+args[1].toInt32());
-            if (sp != -1)
+            if (sp > 0)
                 this.context.x1 = sp;
         },
         onLeave: function(retval){

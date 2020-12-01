@@ -1,67 +1,66 @@
 import sys
 import frida
 
-script = None;
-
-def _on_message(message, data):
-    global script
+def on_message(message, data):
     if message['type'] == 'send':
         msg = message['payload']
-        if data == b'stderr':
-            sys.stderr.write("[+] {0}\n".format(msg))
-        elif data == b'print':
-            sys.stdout.write(msg+'\n')
-            script.post({'type':'ack'})
-        else:
-            sys.stdout.write("[+] {0}\n".format(msg))
+        sys.stderr.write("[+] %s\n"%msg)
     elif message['type'] == 'error':
-        print('[+]')
+        sys.stderr.write('[-] ---------\n')
         for i in message :
-            print('- '+i+':')
-            print(message[i])
+            sys.stderr.write(' -  %s: %s\n'%(i, message[i]))
     else:
         print('[+]'+str(message))
 
+class hfrida() :
+    def __init__(this):
+        this.script = None
+        this.proc_name = None
+        this.lib_name = 'null'
+        this.jnclude = []
+        this.spawn = 0
+        this.engine = 'v8'
+        this.on_message = on_message
 
-def run(js_name, conf, on_message=_on_message):
-    global script
+    def run(this, js_name):
+        header = 'var __libname__ = "' + this.lib_name + '"\n'
+        jnclude = ''
+        for i in this.jnclude :
+            jnclude += open(i).read()
+            jnclude += '\n'
 
-    proc_name = conf.proc_name
-    lib_name = conf.lib_name
+        if not js_name:
+            jscode = header + jnclude
+        else:
+            lines = 0
+            for i in jnclude:
+                if i == '\n':
+                    lines +=1
+            padding = '\n'*(99 - lines%100)
+            header_len = lines + (100 - lines%100)
+            jscode = header + jnclude + padding + open(js_name).read()
 
-    jnclude = ''
-    for i in conf.jnclude :
-        jnclude += open(i).read()
-        jnclude += '\n'
+        f = open('.tmp.js','w')
+        f.write(jscode)
+        f.close()
 
-    lines = 0
-    for i in jnclude:
-        if i == '\n':
-            lines +=1
+        device = frida.get_usb_device()
+        if this.spawn:
+            pid = device.spawn([this.proc_name])
+            process = device.attach(pid)
+        else:
+            process = device.attach(this.proc_name)
+        if this.engine:
+            this.script = process.create_script(jscode, runtime=this.engine)
+        else:
+            this.script = process.create_script(jscode)
+        this.script.on('message', this.on_message)
+        sys.stderr.write('[+] Running %s (offset+%d)\n'%(js_name, header_len))
+        sys.stderr.write('==================================\n')
+        this.script.load()
+        if this.spawn:
+            device.resume(pid)
 
-    header = 'var __libname__ = "' + lib_name + '"\n'
-    padding = '\n'*(99 - lines%100)
-    header_len = lines + (100 - lines%100)
-
-    jscode = header + jnclude + padding + open(js_name).read()
-    f = open('.tmp.js','w')
-    f.write(jscode)
-    f.close()
-
-    device = frida.get_usb_device()
-    if conf.spawn:
-        pid = device.spawn([proc_name])
-        process = device.attach(pid)
-    else:
-        process = device.attach(proc_name)
-    if 'engine' in vars(conf):
-        script = process.create_script(jscode, runtime=conf.engine)
-    else:
-        script = process.create_script(jscode)
-    script.on('message', on_message)
-    sys.stderr.write('[+] Running %s (offset+%d)\n'%(js_name, header_len))
-    sys.stderr.write('==================================\n')
-    script.load()
-    if conf.spawn:
-        device.resume(pid)
+    def wait(this):
+        sys.stdin.read()
 

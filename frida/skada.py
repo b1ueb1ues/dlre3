@@ -1,18 +1,22 @@
-#!python3
+#!/usr/bin/env python3
 # -*- encoding: utf8
 # config ####################
 DPSRANGE = 5
 #ENGINE = 'skada.js'
 ENGINE = 'details.js'
 
+
 #############################
-import lib
-import time
-import sys
-import os
-import re
-import conf
-from common.tl import skillname, charaname, enemyskill, abilityname
+from lib import hfrida
+import sys, os, re, time
+from auto.tl import skillname, charaname, enemyskill, abilityname
+
+f = hfrida()
+f.proc_name = 'com.nintendo.zaga'
+f.lib_name = 'libil2cpp.so'
+f.engine = 'v8'
+f.spawn = False
+f.jnclude = ['lib/bin.js', 'auto/symbol.js', 'jnclude/utils.js', 'jnclude/gl.js', 'jnclude/savetheday.js']
 
 t0 = 0
 fout = None
@@ -405,6 +409,10 @@ def on_message(message, data):
                 disable = 0
                 skada(message)
             return
+    elif message['type'] == 'error' :
+        sys.stderr.write('[-] ---------\n')
+        for i in message :
+            sys.stderr.write(' -  %s: %s\n'%(i, message[i]))
     else:
         print(message)
 
@@ -421,7 +429,9 @@ if __name__ == '__main__':
     else:
         fpname = None
         redir = 1
-    lib.run(ENGINE, conf, on_message)
+    f.on_message = on_message
+    f.run(ENGINE)
+
     try:
         while 1:
             input()

@@ -1,7 +1,7 @@
 var ctx = {};
 
 savetheday();
-gl.sp(0, 0);
+gl.sp();
 //gl.invincible();
 gl.dummy();
 //gl.rangeint();
@@ -133,7 +133,7 @@ offset.characterbase.get_hprate
 
 
 
-if(0)
+if(1)
 hook(
 offset.characterbase.getmaxsp // getmaxsp
 , {
@@ -142,7 +142,7 @@ offset.characterbase.getmaxsp // getmaxsp
         this.idx = args[1];
     },
     onLeave: function(ret){
-        console.log('getmaxsp: '+this.idx+':'+ret);
+        console.log('getmaxsp: '+this.idx+':'+ret.toInt32());
     }
 });
 
