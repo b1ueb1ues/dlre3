@@ -2,12 +2,13 @@
 import sys
 from lib import hfrida
 
+
 if len(sys.argv) > 1:
-    mod = sys.argv[1]
-    if '.js' not in mod:
-        mod = 'mod/%s.js'%mod
+    js = sys.argv[1]
+    if '.js' not in js:
+        js = 'mod/%s.js'%js
 else:
-    mod = 'mod/dc.js'
+    js = 'mod/dc.js'
 
 f = hfrida()
 f.proc_name = 'com.nintendo.zaga'
@@ -15,7 +16,8 @@ f.lib_name = 'libil2cpp.so'
 f.engine = 'v8'
 f.spawn = False
 f.jnclude = ['lib/bin.js', 'auto/symbol.js', 'jnclude/utils.js', 'jnclude/gl.js', 'jnclude/savetheday.js']
-f.run(mod)
+
+f.run(js)
 f.wait()
 
 

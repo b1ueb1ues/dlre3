@@ -7,11 +7,6 @@
 // save the day
 savetheday();
 
-var tzero = [0x30];
-var tone = [0x31];
-var tfloat = [0x66,0x6c,0x6f,0x61,0x74];
-var tstderr = [0x73,0x74,0x64,0x65,0x72,0x72];
-
 // time init
 var g_gpt = new NativeFunction(m.lib_base.add(
     offset.maingamectrl.getgameplaytime
@@ -30,35 +25,21 @@ function now() { return g_gpt(mgc).toFixed(3); }
  * send t0 first
  */
 if(now_init()==0)
-    send(0,tzero);
+    send({hook:'init', t0:0});
 else
-    send(now(),tzero);
-
+    send({hook:'init', t0:now()});
 
 hook(
 offset.maingamectrl.playqueststart,
 {
     onEnter: function(args){
         now_init();
-        send(0, tzero);
-        send(0, tone);
-        send('quest_start\n==============================', tstderr);
+        send({hook:'start', t0:0});
+        console.error('quest_start\n==============================');
     },
     onLeave: function(retval){
     }
 });
-
-
-function csv() {
-    var r = '';
-    for (var i in arguments) {
-        if (i==0)
-            r += arguments[i];
-        else
-            r = r + ',' + arguments[i];
-    }
-    return r
-}
 
 
 var log = {};
@@ -77,30 +58,35 @@ function log_clean(log) {
 }
 log_clean(log);
 
-function commit(log) {
+
+
+function parse_cb(cb) {
     var o_cb = offset.characterbase;
     var o_cha = offset.collisionhitattribute;
-    var o_ci = offset.characterid;
+    var o_cid = offset.characterid;
     var o_dragon = offset.dragoncharacter
 
-    var ct, dpi, dpp, aid, ci, idx;
-    if(log.src && log.src!=0) {
-        var cb = log.src;
+    var ct, dpi, dpp, aid, cid, idx, did;
+
+    if(cb && cb != 0) {
         ct =     cb.add(  o_cb.charactertype           ).readInt(); 
-        ci =     cb.add(  o_cb.characterid             ).readInt(); 
+        cid =     cb.add(  o_cb.characterid             ).readInt(); 
         dpi =    cb.add(  o_cb.dungeonpartyindex       ).readInt(); 
         dpp =    cb.add(  o_cb.dungeonpartyposition    ).readInt(); 
         var p_mpid = cb.add(  o_cb.multiplayid             ).readPointer(); 
 
-        var isd = ''+ci;
-        if (ct==0 && isd[0] == '2'){  //dragon
+        var did = ''+cid;
+        if (ct==0 && did[0] == '2'){  //dragon
             cb = cb.add( o_dragon.human).readPointer();
-            ci = cb.add( o_cb.characterid).readInt();
-            ci = ''+ci+'('+isd+')'
+            did = cid;
+            cid = cb.add( o_cb.characterid).readInt();
+        } else {
+            did = 0;
         }
+
         if (p_mpid != 0){
-            aid = p_mpid.add( o_ci.actorid  ).readU8(); 
-            idx = p_mpid.add( o_ci.index    ).readU8(); 
+            aid = p_mpid.add( o_cid.actorid  ).readU8(); 
+            idx = p_mpid.add( o_cid.index    ).readU8(); 
         }
         else{
             aid = -1;
@@ -111,27 +97,36 @@ function commit(log) {
         dpi = 0;
         dpp = 0;
         aid = -2;
-        ci = -1;
+        cid = -1;
+        did = 0;
         idx = 0;
     }
 
-    var from = csv(ci, '[', ct, dpi, dpp, aid, idx,']') ;
+    var r = {
+        ctype    : '_',
+        cid      : cid,
+        did      : did,
+        team     : dpi,
+        inteam   : dpp,
+        player   : aid,
+        inplayer : idx
+    }
+    if (ct == 0)
+        r.ctype = 'p';
+    else if (ct == 1)
+        r.ctype = 'e';
+    return r;
+}
 
-    cb = log.dst;
-    ct =     cb.add(  o_cb.charactertype           ).readInt(); 
-    ci =     cb.add(  o_cb.characterid             ).readInt(); 
-    dpi =    cb.add(  o_cb.dungeonpartyindex       ).readInt(); 
-    dpp =    cb.add(  o_cb.dungeonpartyposition    ).readInt(); 
-    p_mpid = cb.add(  o_cb.multiplayid             ).readPointer(); 
-    if (p_mpid != 0){
-        aid = p_mpid.add( o_ci.actorid  ).readU8(); 
-        idx = p_mpid.add( o_ci.index    ).readU8(); 
+function commit(log) {
+
+    if (!log.dst || log.dst == 0) {
+        print('must have dst');
+        errrrrrrrrrrrrrrrrr();
     }
-    else{
-        aid = -1;
-        idx = -1;
-    }
-    var to = ci+':['+ ct+'|'+dpi+'.'+dpp+'.'+aid+'.'+idx +']' ;
+
+    var from = parse_cb(log.src);
+    var to = parse_cb(log.dst);
 
     var dtype;
     if (log.type == 'dmg') {
@@ -155,8 +150,17 @@ function commit(log) {
     else
         ts = log.ts
 
-    var skada = csv(ts, log.label, from, '->'+to, 
-        '<'+log.aid+'>', '<'+log.sid+'>', dtype, log.dmg, '//', log.comment);
+    var skada = {
+        ts      : ts,
+        hook    : log.label,
+        from    : from,
+        to      : to,
+        aid     : log.aid,
+        sid     : log.sid,
+        dtype   : dtype,
+        dmg     : log.dmg,
+        comment : log.comment
+    }
     send(skada);
     log_clean(log);
 }
@@ -330,8 +334,8 @@ offset.characterbuff.applybyability
         var tmp = {};
         tmp.dst = args[1];
         tmp.src = args[2];
-        tmp.aid = args[4];
-        tmp.sid = args[5];
+        tmp.aid = args[4].toInt32();
+        tmp.sid = args[5].toInt32();
         tmp.label = 'cbuff::ability';
         tmp.type = 'buff';
         tmp.ts = now();

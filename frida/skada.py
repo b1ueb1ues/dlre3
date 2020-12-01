@@ -218,13 +218,12 @@ def foutopen():
     else:
         fout = None
     teams = {}
+
+    tmp = 'timestamp,hook,[,ctype,team,player,inplayer,],src, dst,<actionid>,<skillid>,->,log_type,dmg'
+    tmp += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-\n'
     if fout:
-        tmp = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
-        tmp += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-\n'
         fwrite(fout, tmp)
     if redir:
-        tmp = 'timestamp,hook,cid,[,ctype,didx,dposition,multiplay_id,multiplay_index,],dst,<actionid>,<skillid>,iscrit,dmg'
-        tmp += ',-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-\n'
         sys.stdout.write(tmp)
 
 
@@ -243,7 +242,7 @@ def summ():
     for i in teams:
         dstid, tmp = i.split(':')
         dsttype = tmp[1]
-        if dsttype != '1':
+        if dsttype != 'e':
             continue
         teamid, dstid = dstid.split('->')
         t = teams[i]
@@ -274,44 +273,61 @@ def summ():
     return ssum
 
 
+def csv(*args, **kwargs):
+    r = ''
+    for i in args:
+        r += '"%s",'%i
+    return r[:-1]
+
 prev_len = 0
-def skada(message):
+def skada(msg):
     global teams
     global skillname, charaname, enemyskill, abilityname
     global fout
     global prev_len
-    p = message['payload']
-    line = p.split(',')
-    tn = float(line[0])
-    srcid = line[2].split('(')[0].strip()
 
-    if srcid == '-1':
+    # common
+    tn = float(msg['ts'])
+    dmg = msg['dmg']
+    actionid = str(msg['aid'])
+    skillid = str(msg['sid'])
+
+    # src
+    src = msg['from']
+    srcid = str(src['cid'])
+    srctype = src['ctype']
+    srcteam = str(src['team'])
+    srcinteam = str(src['inteam'])
+
+    if srctype == 'e':
+        cname = ''
+    elif srcid == '-1':
         cname = 'dot'
     elif srcid in charaname:
         cname = charaname[srcid]
     else:
         cname = '_unknown_'
 
-    dmg = int(line[-3])
-    teamno = line[4]+line[5]
-    dst = line[10]
-    dstid, dstinid = dst[2:].split(':')
-    dsttype = dstinid[1]
-    teamdst = teamno+dst
-    actionid = line[11][1:-1]
-    skillid = line[12][1:-1]
+    teamno = srctype + srcteam
+    player = str(src['player'])
+    inteamno = player+srcinteam
 
-    inteamno = line[7]+line[6]
-    if line[7] == '-2':
-        idx = -2
-    elif line[7] == '-1':
-        idx = int(line[6])
+    # dst
+    dst = msg['to']
+    dstid = str(dst['cid'])
+    to = "->%s:[%s|%s.%s.%s.%s]"%(dst['cid'], dst['ctype'],
+            dst['team'],dst['inteam'],dst['player'],dst['inplayer'])
+    dsttype = dst['ctype']
+
+    # count
+    teamdst = teamno+to
+    if player == '-2':
+        idx = '-2'
+    elif player == '-1':
+        idx = srcinteam
     else:
-        idx = int(inteamno)
-    #    if idx < -9:
-    #        idx = -10 - idx
+        idx = inteamno
 
-    #dp = line[5]+line[6]+line[7]+line[8]
     if teamdst not in teams:
         teams[teamdst] = Team(tn)
 
@@ -319,37 +335,42 @@ def skada(message):
     if srcid != '-2': #buff
         t.add(tn, idx, dmg, cname)
 
-    tmp = ','
-    tmp += cname+'->'
+    event = cname + '->'
     if dstid in charaname:
-        tmp += ' '+charaname[dstid]
+        event += ' '+charaname[dstid]
     if skillid in skillname:
-        tmp += ' '+skillname[skillid]
+        event += ' '+skillname[skillid]
     if skillid in abilityname:
-        tmp += ' '+abilityname[skillid]
+        event += ' '+abilityname[skillid]
     if actionid in enemyskill:
-        tmp += ' '+enemyskill[actionid]
+        event += ' '+enemyskill[actionid]
+
+    tmp = ','
+    tmp += cname+':'
 
     timing = t.timing()
     cur = t.dps_current()
     total = t.dps_total()
     _sum = t.dmg_sum()
-    src = t.dps_src()
+    dps_src = t.dps_src()
 
     tmp += timing
     tmp += _sum
     tmp += cur
     tmp += total
-    tmp += src
+    tmp += dps_src
 
     teaminteamno = ''
     teaminteamno += ',team['+teamno+']:{'
     for k in t.midx:
-        teaminteamno += '%02d '%(k)
+        teaminteamno += k + ' '
     teaminteamno = teaminteamno[:-1] + '}'
     
     tmp += teaminteamno
 
+    #tmp = 'timestamp,hook,[,pve,t,p,idx,],src, dst,<actionid>,<skillid>,->,dmg_type,dmg'
+    p = csv(tn, msg['hook'], '[', srctype, srcteam, player, srcinteam, ']',
+            srcid, to, '<%s>'%actionid, '<%s>'%skillid , event ,msg['dtype'], dmg, '//', msg['comment'] )
     if fout:
         p += tmp + '\n'
         fwrite(fout, p)
@@ -357,7 +378,7 @@ def skada(message):
         p += tmp + '\r\n'
         sys.stdout.write(p)
     #debug{
-    if line[4] == '0' and dsttype=='1':
+    if srctype == 'p' and dsttype=='e':
         if iswin :   # horizon
             name_dps, dmg = t.name_dps_horizon()
             output = '\r%.3f, id:%s->%s, dps:[ %s ]'%(t.tn, teamno, dstid, name_dps)
@@ -380,7 +401,6 @@ def skada(message):
                 if i == '\n':
                     prev_len += 1
             sys.stderr.write(out)
-            
     #}debug
 
 disable = 0
@@ -389,25 +409,24 @@ def on_message(message, data):
     global fout
     global disable, prev_len
     if message['type'] == 'send' :
-        if data == '0' or data == b'0':
-            t0 = float(message['payload'])
+        msg = message['payload']
+        hook = msg['hook']
+        if hook == 'init':
             disable = -1
+            t0 = float(msg['t0'])
             return
-        elif data == '1' or data == b'1':
+        elif hook == 'start':
             summ()
-            return
-        elif data == 'stderr' or data == b'stderr':
-            sys.stderr.write("[*] {0}\n".format(message['payload']))
-            prev_len = 0
+            t0 = 0
             return
         else:
             if disable == 0:
-                skada(message)
+                skada(msg)
                 return
             elif disable == -1:
                 foutopen()
                 disable = 0
-                skada(message)
+                skada(msg)
             return
     elif message['type'] == 'error' :
         sys.stderr.write('[-] ---------\n')

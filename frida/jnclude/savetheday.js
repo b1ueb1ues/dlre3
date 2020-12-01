@@ -24,7 +24,7 @@ function savetheday () {
     hook(offset.maingameleavealonechecker.setleavealonetime, {
         onEnter: function(args){
             this.tis = args[0];
-            send('unsetleavealone',tstderr);
+            console.error('- unsetleavealone');
         },
         onLeave: function(retval){
             var tis = this.tis;
@@ -36,6 +36,7 @@ function savetheday () {
     // fuck the google
     hook( offset.paymenttimer.startcounting ,{
         onEnter: function(args){
+            console.error('- fxxkgoogle');
             var t = ptr(this.context.sp-0x80-0x10);
             t.writeFloat(0.01);
         },
@@ -50,6 +51,7 @@ function savetheday () {
         onEnter: function(args){
         },
         onLeave: function(ret){
+            console.error('- isn\'t mobile');
             ret.replace(0);
         }
     });
