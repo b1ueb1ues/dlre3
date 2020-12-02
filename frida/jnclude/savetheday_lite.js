@@ -1,7 +1,7 @@
 function savetheday () {
     // save the day
     hook(
-    offset.ingameuictrl.showdamageui
+    #InGameUICtrl$$ShowDamageUI# // offset.ingameuictrl.showdamageui
     ,{
         onEnter: function (args) {
             //this.context.x3 = 0; //crit
@@ -12,7 +12,7 @@ function savetheday () {
 
     // save the day
     hook(
-    offset.ingameuictrl.setmovein
+    #InGameUICtrl$$SetMoveIn# // offset.ingameuictrl.setmovein
     ,{
         onEnter: function (args) {
             if (args[1] == 0)
@@ -22,7 +22,7 @@ function savetheday () {
 
     // save the day
     hook(
-    offset.maingameleavealonechecker.setleavealonetime
+    #MainGameLeaveAloneChecker$$SetLeaveAloneTime# // offset.maingameleavealonechecker.setleavealonetime
     ,{
         onEnter: function(args){
             this.tis = args[0];
@@ -38,7 +38,7 @@ function savetheday () {
     // fuck google
     var fuck = 0;
     hook(
-    offset.paymenttimer.startcounting
+    #PaymentTimer$$StartCounting# // offset.paymenttimer.startcounting
     ,{
         onEnter: function(args){
             var t = ptr(this.context.sp-0x80-0x10);
@@ -53,7 +53,7 @@ function savetheday () {
 
     // fuck google
     hook(
-    offset.platformutil.ismobile
+    #PlatformUtil$$IsMobile# // offset.platformutil.ismobile
     ,{
         onEnter: function(args){
         },
