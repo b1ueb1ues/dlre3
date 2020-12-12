@@ -417,6 +417,7 @@ def on_message(message, data):
             return
         elif hook == 'start':
             summ()
+            disable = -1
             t0 = 0
             return
         else:
