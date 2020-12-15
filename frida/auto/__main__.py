@@ -1,11 +1,12 @@
 import re
-
+import sys
 
 path_py = '../working/script.py'
 path_cs = '../working/dump.cs'
 path_gh = '../working/ghidra.out'
 path_out = 'auto/symbol.js'
 path_template = 'jnclude/template.js'
+
 path_tlin = 'auto/textlabel.asset'
 path_tlout = 'auto/tl.py'
 
@@ -20,7 +21,7 @@ def js_symbol():
     get_classes(path_cs)
     get_ghidra(path_gh)
 
-    fout = open(path_out,'w')
+    fout = open(path_out,'w', encoding='utf8')
     for line in open(path_template):
         if '#' in line:
             lout = func(line)
@@ -178,7 +179,7 @@ def get_py_symbol():
 
 def save_py_symbol() :
     global skillname, charaname, enemyskill, abilityname
-    fout = open(path_tlout, 'w')
+    fout = open(path_tlout, 'w', encoding='utf8')
     fout.write('skillname = %s\n'%str(skillname))
     fout.write('charaname = %s\n'%str(charaname))
     fout.write('enemyskill = %s\n'%str(enemyskill))
@@ -188,6 +189,14 @@ def save_py_symbol() :
 
 
 if __name__ == '__main__':
-    js_symbol()
-    if get_py_symbol():
-        save_py_symbol()
+    if len(sys.argv) > 1:
+        s1 = sys.argv[1]
+        if s1 == 's':
+            js_symbol()
+        if s1 == 't':
+            get_py_symbol()
+            save_py_symbol()
+    else:
+        js_symbol()
+        if get_py_symbol():
+            save_py_symbol()
