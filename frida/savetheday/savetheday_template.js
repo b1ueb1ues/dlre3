@@ -30,8 +30,8 @@ function savetheday () {
         },
         onLeave: function(retval){
             var tis = this.tis;
-            tis.add(offset.maingameleavealonechecker.warnningtime).writeFloat(100000);
-            tis.add(offset.maingameleavealonechecker.exittime).writeFloat(100000);
+            tis.add(@MainGameLeaveAloneChecker,_warnningTime@).writeFloat(100000);
+            tis.add(@MainGameLeaveAloneChecker,_exitTime@).writeFloat(100000);
         }
     });
 
