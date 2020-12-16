@@ -6,16 +6,11 @@
 // save the day
 savetheday();
 
-var tzero = [0x30];
-var tone = [0x31];
-var tfloat = [0x66,0x6c,0x6f,0x61,0x74];
-var tstderr = [0x73,0x74,0x64,0x65,0x72,0x72];
-
 // time init
-var g_gpt = new NativeFunction(lib_base.add(
+var g_gpt = new NativeFunction(m.lib_base.add(
     offset.maingamectrl.getgameplaytime
 ),'float', ['pointer']);
-var g_mgc = new NativeFunction(lib_base.add(
+var g_mgc = new NativeFunction(m.lib_base.add(
     offset.maingamectrl.get_instance
 ),'pointer', []);
 var mgc = null;
@@ -127,8 +122,8 @@ function parse_cb(cb) {
 }
 
 function recount(label, dot, dmg, iscrit, src, dst, aid, sid){
-    var from = parse_cb(log.src);
-    var to = parse_cb(log.dst);
+    var from = parse_cb(src);
+    var to = parse_cb(dst);
 
     if(dot) {
         sid = at2name(aid);

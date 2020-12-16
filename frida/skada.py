@@ -2,10 +2,7 @@
 # -*- encoding: utf8
 # config ####################
 DPSRANGE = 5
-#ENGINE = 'skada.js'
 ENGINE = 'details.js'
-
-
 #############################
 from lib import hfrida
 import sys, os, re, time

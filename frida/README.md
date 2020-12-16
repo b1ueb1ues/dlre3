@@ -17,5 +17,5 @@ use os redirect to file:
 
 ## config (at title of skada.py)
 - DPSRANGE: seconds for current dps calc
-- ENGINE:  skada.js(outdated) hook applydamage, details.js hook showdamageui
+- ENGINE:  skada.js(outdated, unable to log afflic) hook applydamage, details.js hook showdamageui
 
