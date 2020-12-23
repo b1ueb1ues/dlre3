@@ -1,7 +1,7 @@
 function savetheday () {
     // save the day
     hook(
-    0x1993664 // offset.ingameuictrl.showdamageui
+    0x184AD50 // offset.ingameuictrl.showdamageui
     ,{
         onEnter: function (args) {
             //this.context.x3 = 0; //crit
@@ -12,7 +12,7 @@ function savetheday () {
 
     // save the day
     hook(
-    0x19A48A8 // offset.ingameuictrl.setmovein
+    0x185C08C // offset.ingameuictrl.setmovein
     ,{
         onEnter: function (args) {
             if (args[1] == 0)
@@ -22,7 +22,7 @@ function savetheday () {
 
     // save the day
     hook(
-    0x1B149A0 // offset.maingameleavealonechecker.setleavealonetime
+    0x1A511C4 // offset.maingameleavealonechecker.setleavealonetime
     ,{
         onEnter: function(args){
             this.tis = args[0];
@@ -38,7 +38,7 @@ function savetheday () {
     // fuck google
     var fuck = 0;
     hook(
-    0x2988CE0 // offset.paymenttimer.startcounting
+    0x27AFFAC // offset.paymenttimer.startcounting
     ,{
         onEnter: function(args){
             var t = ptr(this.context.sp-0x80-0x10);
@@ -53,7 +53,7 @@ function savetheday () {
 
     // fuck google
     hook(
-    0x3F3DE30 // offset.platformutil.ismobile
+    0x3AA25F8 // offset.platformutil.ismobile
     ,{
         onEnter: function(args){
         },

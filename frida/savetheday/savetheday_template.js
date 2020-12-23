@@ -41,6 +41,7 @@ function savetheday () {
     #PaymentTimer$$StartCounting# // offset.paymenttimer.startcounting
     ,{
         onEnter: function(args){
+            console.error('- fxxkgoogle');
             var t = ptr(this.context.sp-0x80-0x10);
             t.writeFloat(0.01);
             fuck = 1;
