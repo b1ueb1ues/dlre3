@@ -41,6 +41,7 @@ function savetheday () {
     offset.paymenttimer.startcounting
     ,{
         onEnter: function(args){
+            console.error('- fxxkgoogle');
             var t = ptr(this.context.sp-0x80-0x10);
             t.writeFloat(0.01);
             fuck = 1;
@@ -48,21 +49,6 @@ function savetheday () {
         onLeave: function(ret){
             var t = ptr(this.context.sp-0x80-0x10);
             t.writeFloat(0.01);
-        }
-    });
-
-    // fuck google
-    hook(
-    offset.platformutil.ismobile
-    ,{
-        onEnter: function(args){
-        },
-        onLeave: function(ret){
-            if(fuck) {
-                console.error('- fxxkgoogle');
-                ret.replace(0);
-                fuck = 0;
-            }
         }
     });
 

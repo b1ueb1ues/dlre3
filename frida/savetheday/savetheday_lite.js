@@ -58,6 +58,7 @@ function _module(libname) {
 var m = module(__libname__);
 var hook = m.hook.bind(m);
 var bt = m.bt.bind(m);
+var lib_base = m.lib_base;
 //var pfn = m.lib_base.add(offset.datetime.get_utcnow);
 //var get_time = new NativeFunction(pfn, 'uint64', []);
 
@@ -104,6 +105,7 @@ function savetheday () {
     0x27AFFAC // offset.paymenttimer.startcounting
     ,{
         onEnter: function(args){
+            console.error('- fxxkgoogle');
             var t = ptr(this.context.sp-0x80-0x10);
             t.writeFloat(0.01);
             fuck = 1;
@@ -111,21 +113,6 @@ function savetheday () {
         onLeave: function(ret){
             var t = ptr(this.context.sp-0x80-0x10);
             t.writeFloat(0.01);
-        }
-    });
-
-    // fuck google
-    hook(
-    0x3AA25F8 // offset.platformutil.ismobile
-    ,{
-        onEnter: function(args){
-        },
-        onLeave: function(ret){
-            if(fuck) {
-                console.error('- fxxkgoogle');
-                ret.replace(0);
-                fuck = 0;
-            }
         }
     });
 }

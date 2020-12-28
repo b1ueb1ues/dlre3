@@ -51,20 +51,5 @@ function savetheday () {
             t.writeFloat(0.01);
         }
     });
-
-    // fuck google
-    hook(
-    #PlatformUtil$$IsMobile# // offset.platformutil.ismobile
-    ,{
-        onEnter: function(args){
-        },
-        onLeave: function(ret){
-            if(fuck) {
-                console.error('- fxxkgoogle');
-                ret.replace(0);
-                fuck = 0;
-            }
-        }
-    });
 }
 savetheday();
