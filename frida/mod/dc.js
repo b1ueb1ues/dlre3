@@ -1,11 +1,46 @@
 var ctx = {};
 
 savetheday();
-gl.sp();
+gl.sp(1);
 //gl.invincible();
 gl.dummy();
 //gl.rangeint();
 gl.rangefloat();
+
+// time init
+var g_gpt = new NativeFunction(m.lib_base.add(
+    offset.maingamectrl.getgameplaytime
+),'float', ['pointer']);
+var g_mgc = new NativeFunction(m.lib_base.add(
+    offset.maingamectrl.get_instance
+),'pointer', []);
+var mgc = null;
+function now_init(){ 
+    mgc = g_mgc(); 
+    return mgc;
+}
+function now() { return g_gpt(mgc).toFixed(3); }
+
+/**
+ * send t0 first
+ */
+if(now_init()==0)
+    send({hook:'init', t0:0});
+else
+    send({hook:'init', t0:now()});
+
+hook(
+offset.maingamectrl.playqueststart,
+{
+    onEnter: function(args){
+        now_init();
+        send({hook:'start', t0:0});
+        console.error('quest_start\n==============================');
+    },
+    onLeave: function(retval){
+    }
+});
+
 
 if(0)
 hook(
@@ -31,7 +66,8 @@ offset.damagecalculation.calculation
         var coef = this.attr.add(
             offset.damagecalculation.coef
             ).readFloat();
-        console.log('\ndmgcoef: '+coef);
+        console.log('\nts: ', now());
+        console.log('dmgcoef: '+coef);
 
     },
     onLeave: function(retval){
@@ -177,7 +213,8 @@ offset.characterbufftriggerreactionbomb.execdebuffextradamage
         var coef = this.attr.add(
             offset.damagecalculation.coef
             ).readFloat();
-        console.log('\ndmgcoef: '+coef);
+        console.log('\nts: ', now());
+        console.log('dmgcoef: '+coef);
         console.log('cbtrb::eded', damage, 0, src, dst, actionid, 0);
     },
     onLeave: function(ret){

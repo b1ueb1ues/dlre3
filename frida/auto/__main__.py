@@ -177,13 +177,16 @@ def get_py_symbol():
     f.close()
     return 1
 
+def fmt(src) :
+    return str(src)[1:-1].replace(", '", ",\n'")
+
 def save_py_symbol() :
     global skillname, charaname, enemyskill, abilityname
     fout = open(path_tlout, 'w', encoding='utf8')
-    fout.write('skillname = %s\n'%str(skillname))
-    fout.write('charaname = %s\n'%str(charaname))
-    fout.write('enemyskill = %s\n'%str(enemyskill))
-    fout.write('abilityname = %s\n'%str(abilityname))
+    fout.write('skillname = {\n%s}\n'%fmt(skillname))
+    fout.write('charaname = {\n%s}\n'%fmt(charaname))
+    fout.write('enemyskill = {\n%s}\n'%fmt(enemyskill))
+    fout.write('abilityname = {\n%s}\n'%fmt(abilityname))
     fout.close()
     print('\n[+] save', path_tlout)
 
