@@ -139,6 +139,7 @@ offset.characterbufftriggerreactionbomb.execdebuffextradamage = #CharacterBuffTr
 
 offset.ingameuictrl.showdamageui = #InGameUICtrl$$ShowDamageUI#;
 offset.ingameuictrl.setmovein = #InGameUICtrl$$SetMoveIn#;
+offset.ingameuictrl.showrecoverhp = #InGameUICtrl$$ShowRecoverHP#;
 
 offset.ctrloverdrive.ondamaged = #CtrlOverdrive$$OnDamaged#;
 

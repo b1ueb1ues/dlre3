@@ -27,9 +27,7 @@ function dict(o) {
             console.log(keys[i], '\t', o[keys[i]]);
         } catch(e) {
             console.log(keys[i]);
-        }
-    }
-}
+}   }   }
 
 function module(libname) { return new _module(libname); }
 function _module(libname) {
@@ -48,8 +46,6 @@ function _module(libname) {
         console.log('bt');
         for (var i in b) {
             console.log(ptr(b[i]).sub(this.lib_base));
-        }
-    }
-}
+}   }   }
 
 

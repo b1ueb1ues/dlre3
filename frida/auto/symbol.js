@@ -139,6 +139,7 @@ offset.characterbufftriggerreactionbomb.execdebuffextradamage = 0x1C9E038;
 
 offset.ingameuictrl.showdamageui = 0x184AD50;
 offset.ingameuictrl.setmovein = 0x185C08C;
+offset.ingameuictrl.showrecoverhp = 0x184B350;
 
 offset.ctrloverdrive.ondamaged = 0x1C4CFFC;
 

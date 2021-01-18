@@ -246,6 +246,13 @@ offset.characterbase.showdamageui
     }
 });
 
+//hook( 
+//offset.characterbase.showdamageui
+//,{ 
+//    onEnter: function(args){
+//    }
+//});
+
 
 if (1)
 hook( 
@@ -359,7 +366,7 @@ hook(offset.characterbase.applydamage, {
         recount();
         log.aid = cha.add( o_cha.actionid  ).readInt();
         log.sid = cha.add( o_cha.skillid   ).readInt();
-        log.label = 'cbase::apply';
+        log.label = 'cbase::applydmg';
     },
     onLeave: function(retval){
     }
