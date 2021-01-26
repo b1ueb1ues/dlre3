@@ -29,15 +29,16 @@ hook(
     }
 });
 
-var dodgeid = {};
+var dodgeid = {'6':1, '7':1};
 hook( 
 #HumanCharacter$$GetAvoidActionId#
 ,{ 
     onLeave: function(ret){
         var adid = ret.toInt32();
-        if (!dodgeid[adid]) {
+        if (adid == 6 || adid == 7)
+            return;
+        if (!dodgeid[adid])
             dodgeid[adid] = 1;
-        }
     }
 });
 hook( 

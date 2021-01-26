@@ -4,8 +4,6 @@ function savetheday () {
     offset.ingameuictrl.showdamageui
     ,{
         onEnter: function (args) {
-            //this.context.x3 = 0; //crit
-            //this.context.x5 = 2;  //ele
             this.context.sp.writeInt(0); // isplayerctrl
         }
     });
@@ -21,15 +19,16 @@ function savetheday () {
     });
 
     // save the day, dodge cancel
-    var dodgeid = {};
+    var dodgeid = {'6':1, '7':1};
     hook( 
     offset.humancharacter.getavoidactionid
     ,{ 
         onLeave: function(ret){
             var adid = ret.toInt32();
-            if (!dodgeid[adid]) {
+            if (adid == 6 || adid == 7)
+                return;
+            if (!dodgeid[adid])
                 dodgeid[adid] = 1;
-            }
         }
     });
     hook( 
@@ -39,8 +38,6 @@ function savetheday () {
             this.aid = args[1].toInt32();
         },
         onLeave: function(ret){
-            //if (this.aid in [6,7,40])
-            //    ret.replace(1);
             if (dodgeid[this.aid])
                 ret.replace(1);
         }
