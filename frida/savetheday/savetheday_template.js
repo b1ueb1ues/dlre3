@@ -1,55 +1,69 @@
-function savetheday () {
-    // save the day
-    hook(
-    #InGameUICtrl$$ShowDamageUI# // offset.ingameuictrl.showdamageui
-    ,{
-        onEnter: function (args) {
-            //this.context.x3 = 0; //crit
-            //this.context.x5 = 2;  //ele
-            this.context.sp.writeInt(0); // isplayerctrl
-        }
-    });
+hook(
+#InGameUICtrl$$ShowDamageUI#
+,{
+    onEnter: function (args) {
+        this.context.sp.writeInt(0);
+    }
+});
 
-    // save the day
-    hook(
-    #InGameUICtrl$$SetMoveIn# // offset.ingameuictrl.setmovein
-    ,{
-        onEnter: function (args) {
-            if (args[1] == 0)
-                this.context.x1 = 1;
-        }
-    });
+hook(
+#InGameUICtrl$$SetMoveIn#
+,{
+    onEnter: function (args) {
+        if (args[1] == 0)
+            this.context.x1 = 1;
+    }
+});
 
-    // save the day
-    hook(
-    #MainGameLeaveAloneChecker$$SetLeaveAloneTime# // offset.maingameleavealonechecker.setleavealonetime
-    ,{
-        onEnter: function(args){
-            this.tis = args[0];
-            console.error('- unsetleavealone');
-        },
-        onLeave: function(retval){
-            var tis = this.tis;
-            tis.add(@MainGameLeaveAloneChecker,_warnningTime@).writeFloat(100000);
-            tis.add(@MainGameLeaveAloneChecker,_exitTime@).writeFloat(100000);
-        }
-    });
+hook(
+#MainGameLeaveAloneChecker$$SetLeaveAloneTime#
+,{
+    onEnter: function(args){
+        this.tis = args[0];
+        console.error('- unsetleavealone');
+    },
+    onLeave: function(retval){
+        var tis = this.tis;
+        tis.add(@MainGameLeaveAloneChecker,_warnningTime@).writeFloat(100000);
+        tis.add(@MainGameLeaveAloneChecker,_exitTime@).writeFloat(100000);
+    }
+});
 
-    // fuck google
-    var fuck = 0;
-    hook(
-    #PaymentTimer$$StartCounting# // offset.paymenttimer.startcounting
-    ,{
-        onEnter: function(args){
-            console.error('- fxxkgoogle');
-            var t = ptr(this.context.sp-0x80-0x10);
-            t.writeFloat(0.01);
-            fuck = 1;
-        },
-        onLeave: function(ret){
-            var t = ptr(this.context.sp-0x80-0x10);
-            t.writeFloat(0.01);
+var dodgeid = {};
+hook( 
+#HumanCharacter$$GetAvoidActionId#
+,{ 
+    onLeave: function(ret){
+        var adid = ret.toInt32();
+        if (!dodgeid[adid]) {
+            dodgeid[adid] = 1;
         }
-    });
-}
-savetheday();
+    }
+});
+hook( 
+#CharacterBase$$CanCancelAction#
+,{ 
+    onEnter: function(args){
+        this.aid = args[1].toInt32();
+    },
+    onLeave: function(ret){
+        if (dodgeid[this.aid])
+            ret.replace(1);
+    }
+});
+
+var fuck = 0;
+hook(
+#PaymentTimer$$StartCounting#
+,{
+    onEnter: function(args){
+        console.error('- fxxkgoogle');
+        var t = ptr(this.context.sp-0x80-0x10);
+        t.writeFloat(0.01);
+        fuck = 1;
+    },
+    onLeave: function(ret){
+        var t = ptr(this.context.sp-0x80-0x10);
+        t.writeFloat(0.01);
+    }
+});

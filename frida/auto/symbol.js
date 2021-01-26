@@ -2,6 +2,7 @@
 var offset = {};
 offset.characterbase = {};
 offset.dragoncharacter = {};
+offset.humancharacter = {};
 offset.characterparameter = {};
 offset.fluctuationparameter = {};
 offset.characterid = {};
@@ -114,6 +115,9 @@ offset.characterbase.calcabnormalstatusdamage = 0x17BDC04;
 offset.characterbase.setabnormalstatus = 0x17C1A94;
 offset.characterbase.getmaxsp = 0x17C4978;
 offset.characterbase.showdamageui = 0x17B9F88;
+
+offset.characterbase.cancancelaction = 0x17A8E4C;
+offset.humancharacter.getavoidactionid = 0x17DBB38;
 
 offset.enemycharacter.ondamaged = 0x18C365C;
 

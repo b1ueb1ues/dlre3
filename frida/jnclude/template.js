@@ -2,6 +2,7 @@
 var offset = {};
 offset.characterbase = {};
 offset.dragoncharacter = {};
+offset.humancharacter = {};
 offset.characterparameter = {};
 offset.fluctuationparameter = {};
 offset.characterid = {};
@@ -114,6 +115,9 @@ offset.characterbase.calcabnormalstatusdamage = #CharacterBase$$CalcAbnormalStat
 offset.characterbase.setabnormalstatus = #CharacterBase$$SetAbnormalStatus#;
 offset.characterbase.getmaxsp = #CharacterBase$$GetMaxSp#;
 offset.characterbase.showdamageui = #CharacterBase$$ShowDamageUI#;
+
+offset.characterbase.cancancelaction = #CharacterBase$$CanCancelAction#;
+offset.humancharacter.getavoidactionid = #HumanCharacter$$GetAvoidActionId#;
 
 offset.enemycharacter.ondamaged = #EnemyCharacter$$OnDamaged#;
 

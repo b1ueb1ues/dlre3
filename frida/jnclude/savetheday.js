@@ -1,5 +1,5 @@
 function savetheday () {
-    // save the day
+    // save the day, little number
     hook(
     offset.ingameuictrl.showdamageui
     ,{
@@ -10,7 +10,7 @@ function savetheday () {
         }
     });
 
-    // save the day
+    // save the day, no ui hide
     hook(
     offset.ingameuictrl.setmovein
     ,{
@@ -20,7 +20,33 @@ function savetheday () {
         }
     });
 
-    // save the day
+    // save the day, dodge cancel
+    var dodgeid = {};
+    hook( 
+    offset.humancharacter.getavoidactionid
+    ,{ 
+        onLeave: function(ret){
+            var adid = ret.toInt32();
+            if (!dodgeid[adid]) {
+                dodgeid[adid] = 1;
+            }
+        }
+    });
+    hook( 
+    offset.characterbase.cancancelaction
+    ,{ 
+        onEnter: function(args){
+            this.aid = args[1].toInt32();
+        },
+        onLeave: function(ret){
+            //if (this.aid in [6,7,40])
+            //    ret.replace(1);
+            if (dodgeid[this.aid])
+                ret.replace(1);
+        }
+    });
+
+    // save the day, no kick out
     hook(
     offset.maingameleavealonechecker.setleavealonetime
     ,{
@@ -35,7 +61,7 @@ function savetheday () {
         }
     });
 
-    // fuck google
+    // save the day, fuck google shop
     var fuck = 0;
     hook(
     offset.paymenttimer.startcounting
@@ -51,5 +77,4 @@ function savetheday () {
             t.writeFloat(0.01);
         }
     });
-
 }
