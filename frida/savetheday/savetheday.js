@@ -6,14 +6,16 @@ hook(
     }
 });
 
-hook(
+var p_movein = lib_base.add(
 0x188B5EC
-,{
-    onEnter: function (args) {
-        if (args[1] == 0)
-            this.context.x1 = 1;
-    }
-});
+);
+var f_movein = new NativeFunction(p_movein, 'void', ['pointer', 'bool']);
+function f_new_movein(tis, isin) {
+    if (isin)
+        f_movein(tis, 1);
+}
+var cb_movein = new NativeCallback(f_new_movein, 'void', ['pointer', 'bool']);
+Interceptor.replace(p_movein, cb_movein);
 
 hook(
 0x1A2E56C
