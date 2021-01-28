@@ -162,4 +162,15 @@ gl.rangefloat = function (dcc) {
     });
 }
 
-
+//gl.theworld = function() {
+//    hook(
+//    offset.maingamectrl.getgameplaytime
+//    ,{ 
+//        onEnter: function(args){
+//            print('in');
+//        },
+//        onLeave: function(ret) {
+//            ret.replace(0);
+//        }
+//    });
+//}
