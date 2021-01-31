@@ -6,8 +6,8 @@ gl.invincible();
 gl.dummy();
 
 if (1)
-hook( // CollisionHitAttribute$$get_DamageAdjustment
-0x0194fb38
+hook( // utpctrl add_point
+0x194E260
 ,{ 
     onEnter: function(args){
         this.tis = args[0];
