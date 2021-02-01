@@ -33,6 +33,7 @@ offset.abnormalstatusenemybase = {};
 offset.paymenttimer = {};
 offset.platformutil = {};
 offset.utpctrl = {};
+offset.ingametime = {};
 
 
 /**
@@ -163,6 +164,7 @@ offset.platformutil.ismobile = 0x3B4D070;
 
 offset.utpctrl.addpoint = 0x194E260;
 
+offset.ingametime.getplaytime = 0x18706E4;
 
 /**
  * dynamic

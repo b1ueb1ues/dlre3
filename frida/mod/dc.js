@@ -7,40 +7,7 @@ gl.dp();
 gl.dummy();
 //gl.rangeint();
 gl.rangefloat();
-
-// time init
-var g_gpt = new NativeFunction(m.lib_base.add(
-    offset.maingamectrl.getgameplaytime
-),'float', ['pointer']);
-var g_mgc = new NativeFunction(m.lib_base.add(
-    offset.maingamectrl.get_instance
-),'pointer', []);
-var mgc = null;
-function now_init(){ 
-    mgc = g_mgc(); 
-    return mgc;
-}
-function now() { return g_gpt(mgc).toFixed(3); }
-
-/**
- * send t0 first
- */
-if(now_init()==0)
-    send({hook:'init', t0:0});
-else
-    send({hook:'init', t0:now()});
-
-hook(
-offset.maingamectrl.playqueststart,
-{
-    onEnter: function(args){
-        now_init();
-        send({hook:'start', t0:0});
-        console.error('quest_start\n==============================');
-    },
-    onLeave: function(retval){
-    }
-});
+gl.theworld();
 
 
 if(0)
