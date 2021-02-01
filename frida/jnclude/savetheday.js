@@ -65,12 +65,12 @@ function savetheday () {
     ,{
         onEnter: function(args){
             console.error('- fxxkgoogle');
-            var t = ptr(this.context.sp-0x80-0x10);
+            var t = ptr(this.context.sp-0x90);
             t.writeFloat(0.01);
             fuck = 1;
         },
         onLeave: function(ret){
-            var t = ptr(this.context.sp-0x80-0x10);
+            var t = ptr(this.context.sp-0x90);
             t.writeFloat(0.01);
         }
     });

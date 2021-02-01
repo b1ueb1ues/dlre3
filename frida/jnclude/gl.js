@@ -86,6 +86,17 @@ gl.sp = function (show, sp) {
     });
 }
 
+gl.dp = function () {
+    hook(
+    offset.collisionhitattribute.get_additionrecoverydp
+    ,{ 
+        onEnter: function(args){
+        },
+        onLeave: function(ret){
+            ret.replace(1000);
+        }
+    });
+}
 
 gl.rangeint = function (crit, proc) {
     hook(
@@ -153,7 +164,7 @@ gl.rangefloat = function (dcc) {
         },
         onLeave: function(ret){
             if (this.dcc) {
-                var p1 = ptr(this.context.sp-0x80-0x10);
+                var p1 = ptr(this.context.sp-0x90);
                 var o = p1.readFloat();
                 p1.writeFloat(dcc);
                 console.log('rangefloat:', o.toFixed(2), '->', dcc);
@@ -162,15 +173,16 @@ gl.rangefloat = function (dcc) {
     });
 }
 
-//gl.theworld = function() {
-//    hook(
-//    offset.maingamectrl.getgameplaytime
-//    ,{ 
-//        onEnter: function(args){
-//            print('in');
-//        },
-//        onLeave: function(ret) {
-//            ret.replace(0);
-//        }
-//    });
-//}
+gl.theworld = function() {
+    hook(
+    offset.ingametime.getplaytime
+    ,{ 
+        onEnter: function(args){
+        },
+        onLeave: function(ret) {
+            var s0 = ptr(this.context.sp-0x90) 
+            var t = s0.readFloat();
+            s0.writeFloat(1.0);
+        }
+    });
+}

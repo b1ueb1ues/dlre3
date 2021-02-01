@@ -32,6 +32,7 @@ offset.abnormalstatusbase = {};
 offset.abnormalstatusenemybase = {};
 offset.paymenttimer = {};
 offset.platformutil = {};
+offset.utpctrl = {};
 
 
 /**
@@ -92,6 +93,7 @@ offset.actionconditionelement.rate = 0x70;
 offset.abnormalstatusbase.owner = 0x18;
 
 
+
 /**
  * functions table
  */
@@ -136,6 +138,7 @@ offset.enemyctrl.setaiaction = 0x2478650;
 
 offset.collisionhitattribute.get_damageadjustment = 0x1A7B554;
 offset.collisionhitattribute.get_tobk = 0x1A7B57C;
+offset.collisionhitattribute.get_additionrecoverydp = 0x1A7B5D4;
 
 offset.chainctrl.add = 0x20BFFDC;
 
@@ -157,6 +160,8 @@ offset.abnormalstatusbase.calcslipdamage = 0x1DFA050;
 offset.abnormalstatusenemybase.addition = 0x1DFCF30;
 offset.paymenttimer.startcounting = 0x29BA5BC;
 offset.platformutil.ismobile = 0x3B4D070;
+
+offset.utpctrl.addpoint = 0x194E260;
 
 
 /**

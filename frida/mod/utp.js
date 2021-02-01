@@ -4,10 +4,11 @@ gl.sp();
 //gl.rangefloat();
 gl.invincible();
 gl.dummy();
+gl.theworld();
 
 if (1)
-hook( // utpctrl add_point
-0x194E260
+hook( // utpctrl addpoint
+offset.utpctrl.addpoint
 ,{ 
     onEnter: function(args){
         this.tis = args[0];
@@ -19,3 +20,15 @@ hook( // utpctrl add_point
     }
 });
 
+if (0)
+hook( // 
+offset.collisionhitattribute.get_additionrecoverydp
+,{ 
+    onEnter: function(args){
+    },
+    onLeave: function(ret){
+        print('get_rdp');
+        print(ret);
+        ret.replace(1000);
+    }
+});

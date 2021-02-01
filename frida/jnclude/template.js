@@ -32,6 +32,8 @@ offset.abnormalstatusbase = {};
 offset.abnormalstatusenemybase = {};
 offset.paymenttimer = {};
 offset.platformutil = {};
+offset.utpctrl = {};
+offset.ingametime = {};
 
 
 /**
@@ -92,6 +94,7 @@ offset.actionconditionelement.rate = @ActionConditionElement,int _Rate@;
 offset.abnormalstatusbase.owner = @AbnormalStatusBase,<owner>@;
 
 
+
 /**
  * functions table
  */
@@ -136,6 +139,7 @@ offset.enemyctrl.setaiaction = #EnemyCtrl$$SetAIAction#;
 
 offset.collisionhitattribute.get_damageadjustment = #CollisionHitAttribute$$get_DamageAdjustment#;
 offset.collisionhitattribute.get_tobk = #CollisionHitAttribute$$get_ToBreakDmgRate#;
+offset.collisionhitattribute.get_additionrecoverydp = #CollisionHitAttribute$$get_AdditionRecoveryDp#;
 
 offset.chainctrl.add = #ChainCtrl$$Add,1#;
 
@@ -158,6 +162,9 @@ offset.abnormalstatusenemybase.addition = #AbnormalStatusEnemyBase$$Addition#;
 offset.paymenttimer.startcounting = #PaymentTimer$$StartCounting#;
 offset.platformutil.ismobile = #PlatformUtil$$IsMobile#;
 
+offset.utpctrl.addpoint = #UtpCtrl$$AddPoint#;
+
+offset.ingametime.getplaytime = #InGameTime$$GetPlayTime#;
 
 /**
  * dynamic

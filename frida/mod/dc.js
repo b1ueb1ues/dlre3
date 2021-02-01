@@ -2,6 +2,7 @@ var ctx = {};
 
 savetheday();
 gl.sp(1);
+gl.dp();
 //gl.invincible();
 gl.dummy();
 //gl.rangeint();
