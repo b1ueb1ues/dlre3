@@ -175,14 +175,14 @@ gl.rangefloat = function (dcc) {
 
 gl.theworld = function() {
     hook(
-    offset.ingametime.getplaytime
+    offset.gamespeedtimespan.pause
     ,{ 
         onEnter: function(args){
+            var p_s = ptr(args[0]).add(0x20);
+            p_s.writeDouble(0.1);
         },
         onLeave: function(ret) {
-            var s0 = ptr(this.context.sp-0x90) 
-            var t = s0.readFloat();
-            s0.writeFloat(1.0);
         }
     });
+
 }

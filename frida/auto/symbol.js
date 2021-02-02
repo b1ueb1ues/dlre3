@@ -34,6 +34,7 @@ offset.paymenttimer = {};
 offset.platformutil = {};
 offset.utpctrl = {};
 offset.ingametime = {};
+offset.gamespeedtimespan = {};
 
 
 /**
@@ -117,6 +118,7 @@ offset.characterbase.calcabnormalstatusdamage = 0x17BDC04;
 
 offset.characterbase.setabnormalstatus = 0x17C1A94;
 offset.characterbase.getmaxsp = 0x17C4978;
+offset.characterbase.getsp = 0x17C72C0;
 offset.characterbase.showdamageui = 0x17B9F88;
 
 offset.characterbase.cancancelaction = 0x17A8E4C;
@@ -165,6 +167,7 @@ offset.platformutil.ismobile = 0x3B4D070;
 offset.utpctrl.addpoint = 0x194E260;
 
 offset.ingametime.getplaytime = 0x18706E4;
+offset.gamespeedtimespan.pause = 0x1870BE4;
 
 /**
  * dynamic

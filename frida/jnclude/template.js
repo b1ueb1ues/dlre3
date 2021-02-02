@@ -34,6 +34,7 @@ offset.paymenttimer = {};
 offset.platformutil = {};
 offset.utpctrl = {};
 offset.ingametime = {};
+offset.gamespeedtimespan = {};
 
 
 /**
@@ -117,6 +118,7 @@ offset.characterbase.calcabnormalstatusdamage = #CharacterBase$$CalcAbnormalStat
 
 offset.characterbase.setabnormalstatus = #CharacterBase$$SetAbnormalStatus#;
 offset.characterbase.getmaxsp = #CharacterBase$$GetMaxSp#;
+offset.characterbase.getsp = #CharacterBase$$GetSp#;
 offset.characterbase.showdamageui = #CharacterBase$$ShowDamageUI#;
 
 offset.characterbase.cancancelaction = #CharacterBase$$CanCancelAction#;
@@ -165,6 +167,7 @@ offset.platformutil.ismobile = #PlatformUtil$$IsMobile#;
 offset.utpctrl.addpoint = #UtpCtrl$$AddPoint#;
 
 offset.ingametime.getplaytime = #InGameTime$$GetPlayTime#;
+offset.gamespeedtimespan.pause = #GameSpeedTimeSpan$$Pause#;
 
 /**
  * dynamic

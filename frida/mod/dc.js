@@ -1,7 +1,7 @@
 var ctx = {};
 
 savetheday();
-gl.sp(1);
+gl.sp(1, 0);
 gl.dp();
 //gl.invincible();
 gl.dummy();
@@ -100,7 +100,7 @@ offset.characterbase.get_defense
 });
 
 
-if(1)
+if(0)
 hook(
 offset.characterbase.get_hprate
 ,{
@@ -136,8 +136,21 @@ offset.characterbase.get_hprate
 });
 
 
-
 if(1)
+hook(
+offset.characterbase.getsp // getsp
+, {
+    onEnter: function(args){
+        this.tis = args[0];
+        this.idx = args[1];
+    },
+    onLeave: function(ret){
+        if (this.idx == 0)
+            console.log('getsp: '+this.idx+':'+ret.toInt32());
+    }
+});
+
+if(0)
 hook(
 offset.characterbase.getmaxsp // getmaxsp
 , {
