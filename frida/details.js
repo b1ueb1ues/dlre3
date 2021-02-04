@@ -99,7 +99,7 @@ function parse_cb(cb) {
         aid = -2;
         cid = -1;
         did = 0;
-        idx = 0;
+        idx = -2;
     }
 
     var r = {
