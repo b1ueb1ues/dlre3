@@ -1,7 +1,8 @@
 var ctx = {};
 
 savetheday();
-gl.sp(1, 0);
+gl.sp();
+gl.showsp();
 gl.dp();
 //gl.invincible();
 gl.dummy();
@@ -136,7 +137,7 @@ offset.characterbase.get_hprate
 });
 
 
-if(1)
+if(0)
 hook(
 offset.characterbase.getsp // getsp
 , {

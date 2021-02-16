@@ -68,7 +68,18 @@ gl.dummy = function () {
     });
 }
 
-gl.sp = function (show, sp) {
+var showsp = 0;
+gl.showsp = function(show) {
+    if (show == undefined)
+        showsp = 1;
+    else if (show)
+        showsp = 1;
+    else
+        showsp = 0;
+        
+}
+
+gl.sp = function (sp) {
     if (sp == undefined)
         sp = 1000000;
 
@@ -76,7 +87,7 @@ gl.sp = function (show, sp) {
     offset.characterbase.recoverysp
     ,{
         onEnter: function(args){
-            if (show)
+            if (showsp)
                 console.log('** sp: '+args[1].toInt32());
             if (sp > 0)
                 this.context.x1 = sp;
