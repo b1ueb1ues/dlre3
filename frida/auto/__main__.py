@@ -7,7 +7,7 @@ path_gh = '../working/ghidra.out'
 path_out = 'auto/symbol.js'
 path_template = 'jnclude/template.js'
 
-path_tlin = 'auto/textlabel.asset'
+path_tlin = '../working/textlabel.asset'
 path_tlout = 'auto/tl.py'
 
 functions = []
