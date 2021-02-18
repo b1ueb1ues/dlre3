@@ -1,3 +1,7 @@
+var m = module(__libname__);
+var hook = m.hook.bind(m);
+var lib_base = m.lib_base;
+
 hook(
 0x18799D4
 ,{
@@ -37,9 +41,7 @@ hook(
 ,{ 
     onLeave: function(ret){
         var adid = ret.toInt32();
-        if (adid == 6 || adid == 7)
-            return;
-        if (!dodgeid[adid])
+        if (adid != 6 && adid != 7 && !dodgeid[adid])
             dodgeid[adid] = 1;
     }
 });
@@ -61,12 +63,24 @@ hook(
 ,{
     onEnter: function(args){
         console.error('- fxxkgoogle');
-        var t = ptr(this.context.sp-0x80-0x10);
+        var t = ptr(this.context.sp-0x90);
         t.writeFloat(0.01);
         fuck = 1;
     },
     onLeave: function(ret){
-        var t = ptr(this.context.sp-0x80-0x10);
+        var t = ptr(this.context.sp-0x90);
         t.writeFloat(0.01);
     }
 });
+
+hook( 
+0x22EA94C
+,{ 
+    onEnter: function(args){
+        print('onEnter');
+        var tis = ptr(args[0]);
+        var max = arrow.f(tis, 0x48);
+        tis.add(0x44).writeFloat(max);
+    }
+});
+

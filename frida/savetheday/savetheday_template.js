@@ -1,3 +1,7 @@
+var m = module(__libname__);
+var hook = m.hook.bind(m);
+var lib_base = m.lib_base;
+
 hook(
 #InGameUICtrl$$ShowDamageUI#
 ,{
@@ -68,3 +72,15 @@ hook(
         t.writeFloat(0.01);
     }
 });
+
+hook( 
+#CameraModeFollow$$LoadFollowDistance#
+,{ 
+    onEnter: function(args){
+        print('onEnter');
+        var tis = ptr(args[0]);
+        var max = arrow.f(tis, @CameraModeFollow,maxDistance@);
+        tis.add(@CameraModeFollow,minDistance@).writeFloat(max);
+    }
+});
+

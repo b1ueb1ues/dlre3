@@ -12,7 +12,8 @@ f.proc_name = 'com.nintendo.zaga'
 f.lib_name = 'libil2cpp.so'
 f.engine = 'v8'
 f.spawn = False
-f.jnclude = ['lib/bin.js', 'jnclude/utils.js', 'savetheday/savetheday.js']
+#f.jnclude = ['lib/bin.js', 'jnclude/utils.js', 'savetheday/savetheday.js']
+f.jnclude = ['lib/bin.js',  'savetheday/savetheday.js']
 
 f.run()
 

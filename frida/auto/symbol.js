@@ -35,6 +35,7 @@ offset.platformutil = {};
 offset.utpctrl = {};
 offset.ingametime = {};
 offset.gamespeedtimespan = {};
+offset.cameramodefollow = {};
 
 
 /**
@@ -94,7 +95,8 @@ offset.actionconditionelement.rate = 0x70;
 
 offset.abnormalstatusbase.owner = 0x18;
 
-
+offset.cameramodefollow.min = 0x44;
+offset.cameramodefollow.max = 0x48;
 
 /**
  * functions table
@@ -168,6 +170,8 @@ offset.utpctrl.addpoint = 0x194E260;
 
 offset.ingametime.getplaytime = 0x18706E4;
 offset.gamespeedtimespan.pause = 0x1870BE4;
+
+offset.cameramodefollow.load = 0x22EA94C;
 
 /**
  * dynamic

@@ -35,6 +35,7 @@ offset.platformutil = {};
 offset.utpctrl = {};
 offset.ingametime = {};
 offset.gamespeedtimespan = {};
+offset.cameramodefollow = {};
 
 
 /**
@@ -94,7 +95,8 @@ offset.actionconditionelement.rate = @ActionConditionElement,int _Rate@;
 
 offset.abnormalstatusbase.owner = @AbnormalStatusBase,<owner>@;
 
-
+offset.cameramodefollow.min = @CameraModeFollow,minDistance@;
+offset.cameramodefollow.max = @CameraModeFollow,maxDistance@;
 
 /**
  * functions table
@@ -168,6 +170,8 @@ offset.utpctrl.addpoint = #UtpCtrl$$AddPoint#;
 
 offset.ingametime.getplaytime = #InGameTime$$GetPlayTime#;
 offset.gamespeedtimespan.pause = #GameSpeedTimeSpan$$Pause#;
+
+offset.cameramodefollow.load = #CameraModeFollow$$LoadFollowDistance#;
 
 /**
  * dynamic
