@@ -21,6 +21,7 @@ class hfrida() :
         this.spawn = 0
         this.engine = 'v8'
         this.on_message = on_message
+        this.js_body = ''
 
     def run(this, js_name=None):
         header = 'var __libname__ = "' + this.lib_name + '"\n'
@@ -30,7 +31,7 @@ class hfrida() :
             jnclude += '\n'
 
         if not js_name:
-            jscode = header + jnclude
+            jscode = header + jnclude + this.js_body
             header_len = 0
         else:
             lines = 0

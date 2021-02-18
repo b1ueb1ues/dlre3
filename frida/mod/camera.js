@@ -14,6 +14,8 @@ offset.cameramodefollow.load// #CameraModeFollow$$LoadFollowDistance#;
         print('onEnter');
         var tis = ptr(args[0]);
         var max = arrow.f(tis, offset.cameramodefollow.max);
+        print(arrow.f(tis, offset.cameramodefollow.min));
+        print(max);
         tis.add(offset.cameramodefollow.min).writeFloat(max);
     }
 });

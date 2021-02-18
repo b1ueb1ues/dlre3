@@ -74,4 +74,15 @@ function savetheday () {
             t.writeFloat(0.01);
         }
     });
+
+    // save the day, lock the camera distance
+    hook( 
+    offset.cameramodefollow.load
+    ,{ 
+        onEnter: function(args){
+            var tis = ptr(args[0]);
+            var max = arrow.f(tis, offset.cameramodefollow.max);
+            tis.add(offset.cameramodefollow.min).writeFloat(max);
+        }
+    });
 }
