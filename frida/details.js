@@ -175,27 +175,26 @@ function recount(){
 
 
 function at2name(at){
-    var ab = ''
-    switch(at){
-        case 0: ab = 'null'; break;
-        case 1: ab = 'poison'; break;
-        case 2: ab = 'burn'; break;
-        case 3: ab = 'freeze'; break;
-        case 4: ab = 'paralysis'; break;
-        case 5: ab = 'blind'; break;
-        case 6: ab = 'stun'; break;
-        case 7: ab = 'curse'; break;
-        case 8: ab = 'rebirth'; break;
-        case 9: ab = 'bog'; break;
-        case 10: ab = 'sleep'; break;
-        case 11: ab = 'frostbite'; break;
-        case 12: ab = 'flash'; break;
-        case 13: ab = 'wind'; break;
-        case 13: ab = 'darkabs'; break;
-        case 99: ab = 'all'; break;
-        default: ab = 'null'; break;
-    }
-    return ab
+    switch (at) {
+        case 0  : return 'none';
+        case 1  : return 'poison';
+        case 2  : return 'burn';
+        case 3  : return 'freeze';
+        case 4  : return 'paralys';
+        case 5  : return 'blind';
+        case 6  : return 'stun';
+        case 7  : return 'curse';
+        case 8  : return 'rebirth';
+        case 9  : return 'bog';
+        case 10 : return 'sleep';
+        case 11 : return 'frostb';
+        case 12 : return 'flashh';
+        case 13 : return 'cwind';
+        case 14 : return 'darka';
+        case 15 : return 'dfire';
+        case 99 : return 'all';
+        default : return 'null';
+    } 
 }
 
 
@@ -245,14 +244,6 @@ offset.characterbase.showdamageui
     onLeave: function(ret){
     }
 });
-
-//hook( 
-//offset.characterbase.showdamageui
-//,{ 
-//    onEnter: function(args){
-//    }
-//});
-
 
 if (1)
 hook( 
