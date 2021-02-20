@@ -19,6 +19,7 @@ var now = function() {
     else
         return -1;
 }
+now.init = function() {mgc = null}
 
 var pfn = m.lib_base.add(offset.datetime.get_utcnow);
 now.utc = new NativeFunction(pfn, 'uint64', []);

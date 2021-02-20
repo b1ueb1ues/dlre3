@@ -2,7 +2,7 @@
 //gl.sp();
 //gl.dummy();
 //gl.theworld();
-gl.dp();
+//gl.dp();
 
 function type(idx) {
     switch (idx) {
@@ -36,8 +36,8 @@ hook(offset.actionconditionelement.get_rate, {
         this.typestr = type(this.type);
     },
     onLeave: function(ret){
-        //console.log('procrate: '+r2i(ret));
-        //console.log('proctype: '+this.typestr);
+        console.log('procrate: '+r2i(ret));
+        console.log('proctype: '+this.typestr);
         if (this.typestr == 'bog')
             ret.replace(200);
     }
@@ -62,9 +62,10 @@ offset.random.randomrangeint
     onLeave: function(ret){
         if (this.dccb) {
             var o = ret;
-            if (ctx.crit)
+            if (ctx.crit) {
                 ret.replace(1)
-            console.log('rangeint:', o, '->', 1);
+                console.log('rangeint:', o, '->', 1);
+            }
             ctx.crit = 0;
         }
     }
@@ -82,9 +83,37 @@ offset.damagecalculation.calculation
         var o_cha = offset.collisionhitattribute;
 
         var aid = ptr(this.attr).add(o_cha.actionid).readInt();
-        print(aid);
-        if (aid == 10138150)
-            ctx.crit = 1;
+        //print(aid);
+        this.t = -1;
+        if (aid == 10138150) {
+            this.a = 1;
+            this.t = now();
+            if (this.t < 7)
+                ctx.crit = 1;
+        }
+    },
+    onLeave: function(ret) {
+        //console.log('calc end');
+        var o_ds = offset.damagestatus;
+        var o_dc = offset.damagecalculation;
+        var o_cha = offset.collisionhitattribute;
+
+        var p_ds = arrow(this.tis, o_dc.normal); //damagestatues normal
+        var dmg = p_ds.add(o_ds.value);
+        var damage = dmg.readInt() ; //value
+        if (this.a)
+            print('' + this.t + ': ', damage);
+    }
+});
+
+hook(
+offset.maingamectrl.playqueststart,
+{
+    onEnter: function(args){
+        now.init();
+        console.error('\nquest_start\n');
+    },
+    onLeave: function(ret){
     }
 });
 
