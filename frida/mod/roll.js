@@ -1,7 +1,8 @@
 
-gl.sp();
-gl.dummy();
-gl.theworld();
+//gl.sp();
+//gl.dummy();
+//gl.theworld();
+gl.dp();
 
 function type(idx) {
     switch (idx) {
@@ -35,8 +36,8 @@ hook(offset.actionconditionelement.get_rate, {
         this.typestr = type(this.type);
     },
     onLeave: function(ret){
-        console.log('procrate: '+r2i(ret));
-        console.log('proctype: '+this.typestr);
+        //console.log('procrate: '+r2i(ret));
+        //console.log('proctype: '+this.typestr);
         if (this.typestr == 'bog')
             ret.replace(200);
     }
@@ -82,7 +83,7 @@ offset.damagecalculation.calculation
 
         var aid = ptr(this.attr).add(o_cha.actionid).readInt();
         print(aid);
-        if (aid == 600001)
+        if (aid == 10138150)
             ctx.crit = 1;
     }
 });
