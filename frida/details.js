@@ -34,6 +34,7 @@ offset.maingamectrl.playqueststart,
 {
     onEnter: function(args){
         now_init();
+        now.init();
         send({hook:'start', t0:0});
         console.error('quest_start\n==============================');
     },
