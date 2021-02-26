@@ -4,7 +4,7 @@ gl.sp();
 //gl.rangeint();
 gl.rangefloat();
 gl.invincible();
-gl.dummy();
+//gl.dummy();
 
 if (1)
 hook( // CollisionHitAttribute$$get_ToBreakDmgRate
@@ -16,7 +16,7 @@ offset.collisionhitattribute.get_tobk
     },
     onLeave: function(retval){
         var bkrate = ptr(this.context.sp-0x90).readFloat();
-        console.log('toOdRate_ret: '+bkrate);
+        console.log('toBkRate_ret: '+bkrate);
     }
 });
 
