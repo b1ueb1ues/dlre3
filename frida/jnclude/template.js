@@ -36,6 +36,8 @@ offset.utpctrl = {};
 offset.ingametime = {};
 offset.gamespeedtimespan = {};
 offset.cameramodefollow = {};
+offset.brfinalconfirmpopup = {};
+offset.brselectjobpopup = {};
 
 
 /**
@@ -133,6 +135,7 @@ offset.maingameleavealonechecker.setleavealonetime = #MainGameLeaveAloneChecker$
 offset.maingamectrl.playqueststart = #MainGameCtrl$$PlayQuestStart#;
 offset.maingamectrl.getgameplaytime = #MainGameCtrl$$GetGamePlayTime#;
 offset.maingamectrl.get_instance = #MainGameCtrl$$get_instance#;
+offset.maingamectrl.createcontinuedialog = #MainGameCtrl$$CreateContinueDialog#;
 
 offset.actionconditionelement.get_rate = #ActionConditionElement$$get_Rate#;
 
@@ -172,6 +175,9 @@ offset.ingametime.getplaytime = #InGameTime$$GetPlayTime#;
 offset.gamespeedtimespan.pause = #GameSpeedTimeSpan$$Pause#;
 
 offset.cameramodefollow.load = #CameraModeFollow$$LoadFollowDistance#;
+
+offset.brfinalconfirmpopup = #BattleRoyalFinalConfirmPopup$$Create#;
+offset.brselectjobpopup = #BattleRoyalSelectJobPopup$$Create#;
 
 /**
  * dynamic

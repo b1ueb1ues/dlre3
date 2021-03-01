@@ -36,6 +36,8 @@ offset.utpctrl = {};
 offset.ingametime = {};
 offset.gamespeedtimespan = {};
 offset.cameramodefollow = {};
+offset.brfinalconfirmpopup = {};
+offset.brselectjobpopup = {};
 
 
 /**
@@ -133,6 +135,7 @@ offset.maingameleavealonechecker.setleavealonetime = 0x1A90CBC;
 offset.maingamectrl.playqueststart = 0x180CF14;
 offset.maingamectrl.getgameplaytime = 0x180EEA4;
 offset.maingamectrl.get_instance = 0x17FFB20;
+offset.maingamectrl.createcontinuedialog = 0x180DC48;
 
 offset.actionconditionelement.get_rate = 0x26F2E84;
 
@@ -172,6 +175,9 @@ offset.ingametime.getplaytime = 0x18B493C;
 offset.gamespeedtimespan.pause = 0x18B4E3C;
 
 offset.cameramodefollow.load = 0x243C4B8;
+
+offset.brfinalconfirmpopup = 0x1A4329C;
+offset.brselectjobpopup = 0x1A477B0;
 
 /**
  * dynamic
