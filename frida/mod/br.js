@@ -1,5 +1,5 @@
 hook( 
-0x19A1FF4 //BattleRoyalFinalConfirmPopup::Create
+offset.brfinalconfirmpopup.create //BattleRoyalFinalConfirmPopup::Create
 ,{ 
     onEnter: function(args){
         send('BattleRoyalFinalConfirmPopup::Create');
@@ -10,7 +10,7 @@ hook(
 });
 
 hook( 
-0x18CEE88 // br_select_job_popup create
+offset.brselectjobpopup.create // br_select_job_popup create
 ,{ 
     onEnter: function(args){
         send('BattleRoyalSelectJobPopup::Create');
@@ -21,10 +21,10 @@ hook(
 });
 
 hook( 
-0x181448C
+offset.maingamectrl.createcontinuedialog
 ,{ 
     onEnter: function(args){
-        send('MainGameCtrl::CreateContinueDialog')
+        send('MainGameCtrl::CreateContinueDialog');
     },
     onLeave: function(ret){
     }

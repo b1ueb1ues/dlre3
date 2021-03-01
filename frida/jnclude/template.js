@@ -176,8 +176,8 @@ offset.gamespeedtimespan.pause = #GameSpeedTimeSpan$$Pause#;
 
 offset.cameramodefollow.load = #CameraModeFollow$$LoadFollowDistance#;
 
-offset.brfinalconfirmpopup = #BattleRoyalFinalConfirmPopup$$Create#;
-offset.brselectjobpopup = #BattleRoyalSelectJobPopup$$Create#;
+offset.brfinalconfirmpopup.create = #BattleRoyalFinalConfirmPopup$$Create#;
+offset.brselectjobpopup.create = #BattleRoyalSelectJobPopup$$Create#;
 
 /**
  * dynamic

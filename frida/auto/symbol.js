@@ -176,8 +176,8 @@ offset.gamespeedtimespan.pause = 0x18B4E3C;
 
 offset.cameramodefollow.load = 0x243C4B8;
 
-offset.brfinalconfirmpopup = 0x1A4329C;
-offset.brselectjobpopup = 0x1A477B0;
+offset.brfinalconfirmpopup.create = 0x1A4329C;
+offset.brselectjobpopup.create = 0x1A477B0;
 
 /**
  * dynamic
