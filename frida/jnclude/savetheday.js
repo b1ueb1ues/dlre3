@@ -9,28 +9,27 @@ function savetheday () {
     });
 
 
-    // save the day, no ui hide. v1
-    hook(
-    offset.ingameuictrl.setmovein
-    ,{
-        onEnter: function (args) {
-            if (args[1] == 0)
-                this.context.x1 = 1;
-        }
-    });
+    //// save the day, no ui hide. v1
+    //hook(
+    //offset.ingameuictrl.setmovein
+    //,{
+    //    onEnter: function (args) {
+    //        if (args[1] == 0)
+    //            this.context.x1 = 1;
+    //    }
+    //});
 
-
-    // save the day, no ui hide. v2
-    //var p_movein = lib_base.add(
-    //    offset.ingameuictrl.setmovein
-    //);
-    //var f_movein = new NativeFunction(p_movein, 'void', ['pointer', 'bool']);
-    //function f_new_movein(tis, isin) {
-    //    if (isin)
-    //        f_movein(tis, 1);
-    //}
-    //var cb_movein = new NativeCallback(f_new_movein, 'void', ['pointer', 'bool']);
-    //Interceptor.replace(p_movein, cb_movein);
+    //// save the day, no ui hide. v2
+    var p_movein = lib_base.add(
+        offset.ingameuictrl.setmovein
+    );
+    var f_movein = new NativeFunction(p_movein, 'void', ['pointer', 'bool']);
+    function f_new_movein(tis, isin) {
+        if (isin)
+            f_movein(tis, 1);
+    }
+    var cb_movein = new NativeCallback(f_new_movein, 'void', ['pointer', 'bool']);
+    Interceptor.replace(p_movein, cb_movein);
 
     // save the day, dodge cancel
     var dodgeid = {'6':1, '7':1};
