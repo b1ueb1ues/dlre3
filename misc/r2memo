@@ -1,0 +1,30 @@
+axff[j] [addr]  find data/code references from this function
+可以代替digestfcn
+或者pdsf/pdfs
+
+axt @@ str.* : 所有字符串的引用
+ps[?][pwz] [len] : print pascal/wide/zero-terminated strings
+
+aefa [addr] : emulate function to find out args in given or current offset
+
+arcc : Show calling convention defined from the register profile
+
+arr : Show register references (telescoping) // also show args usage
+ 
+axv [addr] : list local variables read-write-exec references
+
+afv= : list function variables and arguments with disasm refs
+
+axff[j] [addr]  find data/code references from this function
+
+pdfs : disassemble function summary
+pdsf : Summarize the current function
+
+
+afi. : show function name in current offset
+afi [addr|fcn.name] : show function(s) information (verbose afl)
+afl[?] [ls*] [fcn name] : list functions (addr, size, bbs, name) (see afll)
+
+flags
+
+
